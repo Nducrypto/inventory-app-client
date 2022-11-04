@@ -32,7 +32,7 @@ const Form = () => {
     if (currentId) {
       setForm(clickEdith);
     }
-  }, [clickEdith, setForm]);
+  }, [clickEdith, setForm, currentId]);
 
   const handleSubmit = () => {
     if (currentId) {

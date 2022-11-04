@@ -52,7 +52,7 @@ const Navbar = () => {
     } else {
       setActiveMenu(true);
     }
-  }, [setActiveMenu]);
+  }, [setActiveMenu, screenSize]);
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
