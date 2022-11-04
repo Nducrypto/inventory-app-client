@@ -44,7 +44,7 @@ const Navbar = () => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [setActiveMenu]);
 
   useEffect(() => {
     if (screenSize <= 900) {
@@ -52,7 +52,7 @@ const Navbar = () => {
     } else {
       setActiveMenu(true);
     }
-  }, [screenSize]);
+  }, [setScreenSize]);
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
