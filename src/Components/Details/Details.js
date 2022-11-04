@@ -2,7 +2,7 @@ import { Paper, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getTransaction } from "../../States/Actions/InventoryActions";
 import { useStateContext } from "../../States/Context/ContextProvider";
 

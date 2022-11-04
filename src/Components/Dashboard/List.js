@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import Form from "../Form/Form";
 import { deleteTransaction } from "../../States/Actions/InventoryActions";
 import {
   List as MUIList,
