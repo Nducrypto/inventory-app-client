@@ -108,7 +108,7 @@ const Form = () => {
             sx={{
               marginLeft: "3rem",
               marginTop: "1rem",
-              width: { xs: "12rem", sm: "8rem", sm: "8rem", md: "8rem" },
+              width: { xs: "12rem", sm: "8rem", lg: "8rem", md: "8rem" },
             }}
             variant="contained"
             onClick={handleSubmit}
