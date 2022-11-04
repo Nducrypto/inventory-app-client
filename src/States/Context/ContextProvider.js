@@ -14,13 +14,23 @@ export const ContextProvider = ({ children }) => {
   };
   const [form, setForm] = useState(initialState);
   const [currentId, setCurrentId] = useState();
+  const [activeMenu, setActiveMenu] = useState(true);
+  const [screenSize, setScreenSize] = useState(undefined);
+  const [search, setSearch] = useState("");
+  const [prompt, setPrompt] = useState(false);
+
   const { inventories } = useSelector((state) => state.inventory);
 
+  const user = JSON.parse(localStorage.getItem("profile"));
+  const creator = user?.result._id;
+
+  const showByCreator = inventories.filter((p) => p.creator === creator);
+
   // WATCH
-  const inComingWatch = inventories.filter(
+  const inComingWatch = showByCreator.filter(
     (p) => (p.type === "Incoming") & (p.category === "Watch")
   );
-  const outGoingWatch = inventories.filter(
+  const outGoingWatch = showByCreator.filter(
     (p) => (p.type === "Outgoing") & (p.category === "Watch")
   );
 
@@ -33,10 +43,10 @@ export const ContextProvider = ({ children }) => {
   const outWatchReducedAmount = outGoingWatch.reduce((x, y) => x + y.amount, 0);
 
   //  FOR SHOE
-  const inShoe = inventories.filter(
+  const inShoe = showByCreator.filter(
     (p) => (p.type === "Incoming") & (p.category === "Shoe")
   );
-  const outShoe = inventories.filter(
+  const outShoe = showByCreator.filter(
     (p) => (p.type === "Outgoing") & (p.category === "Shoe")
   );
 
@@ -49,11 +59,11 @@ export const ContextProvider = ({ children }) => {
   const outShoeReducedAmount = outShoe.reduce((x, y) => x + y.amount, 0);
 
   //  FOR CLOTH
-  const inCloth = inventories.filter(
+  const inCloth = showByCreator.filter(
     (p) => (p.type === "Incoming") & (p.category === "Cloth")
   );
-  const outCloth = inventories.filter(
-    (p) => (p.type === "Outgoing") & (p.category === "cloth")
+  const outCloth = showByCreator.filter(
+    (p) => (p.type === "Outgoing") & (p.category === "Cloth")
   );
 
   const inClothReducedQuantity = inCloth.reduce((x, y) => x + y.quantity, 0);
@@ -65,10 +75,10 @@ export const ContextProvider = ({ children }) => {
   const outClothReducedAmount = outCloth.reduce((x, y) => x + y.amount, 0);
 
   //  FOR DOOR
-  const inDoor = inventories.filter(
+  const inDoor = showByCreator.filter(
     (p) => (p.type === "Incoming") & (p.category === "Door")
   );
-  const outDoor = inventories.filter(
+  const outDoor = showByCreator.filter(
     (p) => (p.type === "Outgoing") & (p.category === "Door")
   );
 
@@ -81,10 +91,10 @@ export const ContextProvider = ({ children }) => {
   const outDoorReducedAmount = outDoor.reduce((x, y) => x + y.amount, 0);
 
   //  FOR BAG
-  const inComingBag = inventories.filter(
+  const inComingBag = showByCreator.filter(
     (p) => (p.type === "Incoming") & (p.category === "Bag")
   );
-  const outGoingBag = inventories.filter(
+  const outGoingBag = showByCreator.filter(
     (p) => (p.type === "Outgoing") & (p.category === "Bag")
   );
 
@@ -132,9 +142,17 @@ export const ContextProvider = ({ children }) => {
   return (
     <stateContext.Provider
       value={{
-        inventories,
+        showByCreator,
         form,
+        activeMenu,
+        setActiveMenu,
+        screenSize,
+        setScreenSize,
         setForm,
+        search,
+        setSearch,
+        prompt,
+        setPrompt,
         initialState,
         currentId,
         setCurrentId,

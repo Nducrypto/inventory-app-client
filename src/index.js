@@ -3,18 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider, createTheme } from "@mui/material";
 import { Provider } from "react-redux";
-import {
-  // legacy_createStore as createStore,
-  applyMiddleware,
-  compose,
-  legacy_createStore,
-} from "redux";
+import { applyMiddleware, compose, legacy_createStore } from "redux";
 import thunk from "redux-thunk";
 
-import Reducers from "./Reducers";
+import Reducers from "./States/Reducers";
 import { ContextProvider } from "./States/Context/ContextProvider";
+import { BrowserRouter } from "react-router-dom";
 
 const store = legacy_createStore(Reducers, compose(applyMiddleware(thunk)));
 
@@ -22,9 +17,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <ContextProvider>
-      {/* <ThemeProvider theme={theme}> */}
-      <App />
-      {/* </ThemeProvider> */}
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ContextProvider>
   </Provider>
 );

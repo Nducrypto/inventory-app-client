@@ -1,8 +1,9 @@
-import * as api from "../Api/index.js";
+import * as api from "../Api/index";
 
 export const getTransactions = () => async (dispatch) => {
   try {
     const { data } = await api.fetchInventories();
+    console.log(data);
     dispatch({ type: "FETCH_ALL", payload: data });
   } catch (error) {
     console.log(error);

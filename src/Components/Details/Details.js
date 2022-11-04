@@ -2,19 +2,18 @@ import { Paper, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useParams } from "react-router-dom";
-import { getTransaction } from "../../Actions/InventoryActions";
+import { useLocation, useParams } from "react-router-dom";
+import { getTransaction } from "../../States/Actions/InventoryActions";
 import { useStateContext } from "../../States/Context/ContextProvider";
 
 const Details = () => {
-  const { handleTotal } = useStateContext();
-
+  const { handleTotal, showByCreator } = useStateContext();
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const location = useLocation();
+  const id = location.state.id;
+  const { inventory } = useSelector((state) => state.inventory);
 
-  const { inventories, inventory } = useSelector((state) => state.inventory);
-
-  const filtered = inventories.filter(
+  const filtered = showByCreator.filter(
     (p) => (p._id !== id) & (p.category === inventory.category)
   );
   useEffect(() => {
@@ -23,7 +22,13 @@ const Details = () => {
 
   return (
     <div>
-      <Paper elevation={9} sx={{ textAlign: "center" }}>
+      <Paper
+        elevation={9}
+        sx={{
+          textAlign: "center",
+          marginTop: { xs: "6rem", md: "3rem", sm: "4rem", lg: "3rem" },
+        }}
+      >
         <Typography variant="h5">{inventory.type}</Typography>
         <Typography variant="h4">{inventory.category}</Typography>
         <div>{inventory.date}</div>
