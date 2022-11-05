@@ -39,9 +39,6 @@ const Products = () => {
           justifyContent="center"
           sx={{ marginTop: { xs: "4.7rem", md: "1rem", sm: "3rem" } }}
         >
-          {/* <div>
-        <input value={search} onChange={(e) => setSearch(e.target.value)} />
-      </div> */}
           <Grid item xs={11} md={7} sm={7}>
             <div>
               <Form />
@@ -53,7 +50,6 @@ const Products = () => {
                 dense={false}
                 sx={{
                   maxHeight: "350px",
-                  // maxHeight: "130px",
                   overflow: "auto",
                 }}
               >
@@ -79,7 +75,7 @@ const Products = () => {
                       <ListItemText
                         primary={`${t.category} - ${t.quantity}`}
                         secondary={`$${t.amount} - ${moment(t.date).format(
-                          " MMMM Do YYYY"
+                          "M Do YYYY"
                         )}`}
                       />
                       <ListItemSecondaryAction>

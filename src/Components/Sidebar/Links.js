@@ -5,7 +5,16 @@ import { FiShoppingBag } from "react-icons/fi";
 
 export const links = [
   {
-    title: "products",
+    title: "Dashboard",
+    link: [
+      {
+        name: "home",
+        icon: <FiShoppingBag />,
+      },
+    ],
+  },
+  {
+    title: "Products",
     link: [
       {
         name: "products",

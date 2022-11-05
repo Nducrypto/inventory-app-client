@@ -16,6 +16,7 @@ import {
 import { Delete, MoneyOff, MoreHoriz, Visibility } from "@mui/icons-material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const List = () => {
   const navigate = useNavigate();
@@ -34,8 +35,7 @@ const List = () => {
       <MUIList
         dense={false}
         sx={{
-          maxHeight: "200px",
-          // maxHeight: "130px",
+          maxHeight: "150px",
           overflow: "auto",
         }}
       >
@@ -53,7 +53,9 @@ const List = () => {
               </ListItemAvatar>
               <ListItemText
                 primary={`${t.category} - ${t.quantity}`}
-                secondary={`$${t.amount}`}
+                secondary={`$${t.amount} - ${moment(t.date).format(
+                  "M Do YYYY"
+                )}`}
               />
               <ListItemSecondaryAction>
                 <Tooltip title="Delete">

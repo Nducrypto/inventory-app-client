@@ -47,6 +47,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route
+              path="/home"
+              element={user?.result ? <Dashboard /> : <Navigate to="/" />}
+            />
+            <Route
               path="/products"
               element={user?.result ? <Products /> : <Navigate to="/" />}
             />

@@ -28,8 +28,8 @@ const Navbar = () => {
     handleClick,
     screenSize,
     setScreenSize,
-    // search,
-    // setSearch,
+    search,
+    setSearch,
     prompt,
     setPrompt,
   } = useStateContext();
@@ -59,7 +59,10 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between p-2 md:mx-6 relative bg-black w-900">
+    <div
+      style={{ backgroundColor: "darkblue" }}
+      className="flex justify-between p-2 md:mx-6 relative w-900"
+    >
       <NavButton
         title="Menu"
         customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
@@ -74,19 +77,29 @@ const Navbar = () => {
         {user?.result && (
           <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
             {/* <img className="rounded-full w-8 h-8" alt="loading" /> */}
-            <span className="text-gray-400 font-bold mr-8 text-14">
+            <span
+              style={{ color: "white" }}
+              className=" font-bold mr-8 text-14"
+            >
               {user?.result.name}
             </span>
           </div>
         )}
 
-        {/* {user?.result && (
+        {user?.result && (
           <input
+            style={{
+              width: "6.5rem",
+              height: "2rem",
+              marginRight: "2rem",
+              marginTop: "0.3rem",
+            }}
+            className="placeholder:italic placeholder:text-slate-400 rounded-md py-2 pl-4 pr-3 focus:outline-none"
+            placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="rounded-lg mr-4 text-14"
           />
-        )} */}
+        )}
 
         {user?.result ? (
           <div
@@ -96,14 +109,14 @@ const Navbar = () => {
             {!prompt && (
               <Button
                 size="small"
-                sx={{ textTransform: "lowerCase" }}
+                sx={{ textTransform: "lowerCase", backgroundColor: "red" }}
                 variant="contained"
                 onClick={() => {
                   setPrompt(true);
                 }}
                 className="text-red-700 font-bold ml-1 text-14"
               >
-                logout
+                Logout
               </Button>
             )}
           </div>
