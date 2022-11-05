@@ -47,7 +47,7 @@ const Form = () => {
     dispatch(createTransaction({ ...form, amount: amount, creator: creator }));
     setForm(initialState);
   };
-
+  if (!user?.result) return null;
   return (
     <Paper
       sx={{

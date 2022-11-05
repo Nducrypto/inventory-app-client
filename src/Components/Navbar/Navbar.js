@@ -28,8 +28,8 @@ const Navbar = () => {
     handleClick,
     screenSize,
     setScreenSize,
-    search,
-    setSearch,
+    // search,
+    // setSearch,
     prompt,
     setPrompt,
   } = useStateContext();
@@ -80,13 +80,13 @@ const Navbar = () => {
           </div>
         )}
 
-        {user?.result && (
+        {/* {user?.result && (
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="rounded-lg mr-4 text-14"
           />
-        )}
+        )} */}
 
         {user?.result ? (
           <div
