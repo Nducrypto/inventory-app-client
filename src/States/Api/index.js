@@ -17,6 +17,11 @@ export const deleteTransaction = (id) => API.delete(`/page/${id}`);
 export const updateTransaction = (id, updatedTransaction) =>
   API.patch(`/page/${id}`, updatedTransaction);
 
-//    =======Auth API=====
+//    =======Auth/USERS API=====
 export const login = (formAuth) => API.post("/auth/login", formAuth);
 export const register = (formAuth) => API.post("/auth/register", formAuth);
+
+export const fetchUser = (id) => API.get(`/auth/${id}`);
+
+export const updateUser = (id, userUpdate) =>
+  API.put(`/auth/${id}`, userUpdate);

@@ -3,6 +3,7 @@ const AuthReducer = (
     authData: null || JSON.parse(localStorage.getItem("profile")),
     loading: false,
     error: null,
+    // singleUser: [],
   },
   action
 ) => {
@@ -31,6 +32,17 @@ const AuthReducer = (
     case "LOGOUT":
       localStorage.clear();
       return { ...authReducer, authData: null, loading: false, error: false };
+
+    case "FETCH_USER_BY_ID":
+      return { ...authReducer, singleUser: action.payload };
+
+    case "UPDATE_USER":
+      return {
+        ...authReducer,
+        singleUser: authReducer.singleUser.map((p) =>
+          p._id === action.payload._id ? action?.payload : p
+        ),
+      };
 
     default:
       return authReducer;

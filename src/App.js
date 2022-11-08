@@ -11,8 +11,24 @@ import Auth from "./Components/Auth/Auth";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import { useStateContext } from "./States/Context/ContextProvider";
 import Navbar from "./Components/Navbar/Navbar";
+import Profile from "./Components/Profile/Profile";
 
 function App() {
+  const ProtectedRoute = ({ children }) => {
+    if (user?.result) {
+      return children;
+    } else {
+      return <Navigate to="/" />;
+    }
+  };
+  const AuthProtectedRoute = ({ children }) => {
+    if (!user?.result) {
+      return children;
+    } else {
+      return <Navigate to="/" />;
+    }
+  };
+
   const { activeMenu } = useStateContext();
   const location = useLocation();
 
@@ -47,21 +63,46 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/home"
-              element={user?.result ? <Dashboard /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/products"
-              element={user?.result ? <Products /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/:category"
-              element={user?.result ? <Details /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <Details />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/auth"
-              element={!user?.result ? <Auth /> : <Navigate to="/" />}
+              element={
+                <AuthProtectedRoute>
+                  <Auth />
+                </AuthProtectedRoute>
+              }
             />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
       </div>

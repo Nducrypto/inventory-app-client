@@ -22,6 +22,8 @@ const initialState = {
   email: "",
   password: "",
   confirmPassword: "",
+  bio: "",
+  phoneNumber: "",
 };
 
 const SignUp = () => {
@@ -100,35 +102,17 @@ const SignUp = () => {
           }}
         >
           <Grid container spacing={2}>
-            {isSignup && (
-              <>
-                <InputAuth
-                  id="firstName"
-                  label="First Name"
-                  handleChange={handleChange}
-                  autoFocus
-                  half
-                />
-                <InputAuth
-                  id="lastName"
-                  label="Last Name"
-                  handleChange={handleChange}
-                  half
-                />
-              </>
-            )}
-
             <InputAuth
               id="email"
               label="Email Address"
-              handleChange={handleChange}
+              onChange={handleChange}
               type="email"
             />
 
             <InputAuth
               id="password"
               label="Password"
-              handleChange={handleChange}
+              onChange={handleChange}
               type={showPassword ? "text" : "password"}
               handleShowPassword={handleShowPassword}
             />
@@ -137,7 +121,7 @@ const SignUp = () => {
               <InputAuth
                 id="confirmPassword"
                 label="Repeat Password"
-                handleChange={handleChange}
+                onChange={handleChange}
                 type="password"
               />
             )}

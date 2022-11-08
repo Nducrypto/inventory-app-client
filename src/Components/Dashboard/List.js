@@ -21,7 +21,7 @@ import moment from "moment";
 const List = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setCurrentId, showByCreator, search, setSearch } = useStateContext();
+  const { setCurrentId, showByCreator, search } = useStateContext();
 
   const searching = showByCreator.filter(
     (p) =>
@@ -31,7 +31,6 @@ const List = () => {
   const changer = search ? searching : showByCreator;
   return (
     <Paper sx={{ marginTop: "2rem" }}>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} />
       <MUIList
         dense={false}
         sx={{

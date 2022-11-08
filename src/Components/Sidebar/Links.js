@@ -1,4 +1,4 @@
-// import { AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FiShoppingBag } from "react-icons/fi";
 
 // import { RiContactsLine } from "react-icons/ri";
@@ -23,17 +23,17 @@ export const links = [
     ],
   },
 
-  // {
-  //   title: "Pages",
-  //   link: [
-  //     {
-  //       name: "orders",
-  //       icon: <AiOutlineShoppingCart />,
-  //     },
-  //     {
-  //       name: "profile",
-  //       icon: <RiContactsLine />,
-  //     },
-  //   ],
-  // },
+  {
+    title: "Profile",
+    link: [
+      {
+        name: "profile",
+        icon: <AiOutlineShoppingCart />,
+      },
+      // {
+      //   name: "profile",
+      //   icon: <RiContactsLine />,
+      // },
+    ],
+  },
 ];

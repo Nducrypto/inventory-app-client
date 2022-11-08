@@ -107,7 +107,7 @@ const Sidebar = () => {
         </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="caption table">
-            <caption>A basic table example with a caption</caption>
+            <caption>Track Your Transactions From Anywhere you are</caption>
             <TableHead>
               <TableRow sx={{ backgroundColor: "white" }}>
                 <TableCell sx={{ color: "green", fontSize: "1.5rem" }}>

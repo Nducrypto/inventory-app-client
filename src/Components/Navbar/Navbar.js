@@ -75,13 +75,13 @@ const Navbar = () => {
       <div className="flex">
         {/* ======PROFILE=== */}
         {user?.result && (
-          <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
+          <div className="flex items-center gap-2 cursor-pointer p-1 secondary-dark-bg rounded-lg">
             {/* <img className="rounded-full w-8 h-8" alt="loading" /> */}
             <span
               style={{ color: "white" }}
               className=" font-bold mr-8 text-14"
             >
-              {user?.result.name}
+              {user?.result.firstName} {user?.result.lastName}
             </span>
           </div>
         )}
@@ -103,13 +103,13 @@ const Navbar = () => {
 
         {user?.result ? (
           <div
-            className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+            className="flex items-center gap-2 cursor-pointer p-1 secondary-dark-bg rounded-lg"
             onClick={() => handleClick("userProfile")}
           >
             {!prompt && (
               <Button
                 size="small"
-                sx={{ textTransform: "lowerCase", backgroundColor: "red" }}
+                sx={{ textTransform: "capitalize", backgroundColor: "red" }}
                 variant="contained"
                 onClick={() => {
                   setPrompt(true);

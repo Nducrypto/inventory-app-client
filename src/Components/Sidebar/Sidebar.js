@@ -18,10 +18,10 @@ const Sidebar = () => {
   };
 
   const activeLink =
-    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-blue text-md m-2";
+    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2";
 
   const normalLink =
-    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
+    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-md hover:bg-secondary-dark-bg m-2";
 
   if (!user?.result) return null;
 
@@ -36,9 +36,9 @@ const Sidebar = () => {
             <Link
               to="/"
               onClick={handleCloseSidebar}
-              className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
+              className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight text-slate-900"
             >
-              <span>Inventory</span>
+              <span style={{ color: "white" }}>Inventory</span>
             </Link>
 
             <Tooltip title="Menu" position="BottomCenter">
@@ -47,7 +47,7 @@ const Sidebar = () => {
                 onClick={() =>
                   setActiveMenu((prevActiveMenu) => !prevActiveMenu)
                 }
-                className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block "
+                className="text-xl rounded-full p-3 mt-4 block "
               >
                 <MdOutlineCancel />
               </button>
@@ -57,7 +57,9 @@ const Sidebar = () => {
           <div className="mt-10">
             {links.map((item) => (
               <div key={item.title}>
-                <p className="text-gray-400 m-3 mt-4 uppercase">{item.title}</p>
+                <p style={{ color: "white" }} className="m-3 mt-4 uppercase">
+                  {item.title}
+                </p>
 
                 {item.link.map((Link) => (
                   <NavLink
@@ -69,6 +71,7 @@ const Sidebar = () => {
                     }
                     style={({ isActive }) => ({
                       backgroundColor: isActive ? "red" : "",
+                      color: "white",
                     })}
                   >
                     {Link.icon}
