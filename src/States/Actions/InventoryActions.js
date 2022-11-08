@@ -2,8 +2,11 @@ import * as api from "../Api/index";
 
 export const getTransactions = () => async (dispatch) => {
   try {
+    dispatch({ type: "START_LOADING" });
+
     const { data } = await api.fetchInventories();
     dispatch({ type: "FETCH_ALL", payload: data });
+    dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error);
   }

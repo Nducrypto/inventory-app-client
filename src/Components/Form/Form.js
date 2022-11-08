@@ -92,10 +92,13 @@ const Form = () => {
           </Grid>
           <Grid xs={6}>
             <TextField
-              type="date"
               fullWidth
               value={form.date}
               onChange={(e) => setForm({ ...form, date: e.target.value })}
+              type="datetime-local"
+              inputProps={{
+                min: new Date().toISOString().slice(0, 16),
+              }}
             />
             <TextField
               type="Number"

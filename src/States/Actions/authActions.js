@@ -19,12 +19,12 @@ export const login = (formAuth, navigate) => async (dispatch) => {
 
 export const register = (formAuth, navigate) => async (dispatch) => {
   try {
-    dispatch({ type: "START_LOADING" });
+    dispatch({ type: "LOADING_START" });
 
     const { data } = await api.register(formAuth);
     console.log(data);
     dispatch({ type: "LOGIN_SUCCESS", payload: data });
-    dispatch({ type: "END_LOADING" });
+    dispatch({ type: "LOADING_END" });
 
     navigate("/");
   } catch (err) {
@@ -36,11 +36,12 @@ export const register = (formAuth, navigate) => async (dispatch) => {
 
 export const getUser = (id) => async (dispatch) => {
   try {
-    // dispatch({ type: START_LOADING });
+    dispatch({ type: "LOADING_START" });
 
     const { data } = await api.fetchUser(id);
-
     dispatch({ type: "FETCH_USER_BY_ID", payload: data });
+
+    dispatch({ type: "LOADING_END" });
   } catch (error) {
     console.log(error);
   }

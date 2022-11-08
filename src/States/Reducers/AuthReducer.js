@@ -8,9 +8,9 @@ const AuthReducer = (
   action
 ) => {
   switch (action.type) {
-    case "START_LOADING":
+    case "LOADING_START":
       return { ...authReducer, loading: true };
-    case "END_LOADING":
+    case "LOADING_END":
       return { ...authReducer, loading: false };
 
     case "LOGIN_START":

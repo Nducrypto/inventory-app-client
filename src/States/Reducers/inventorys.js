@@ -1,5 +1,14 @@
-const inventory = (inventory = { inventories: [], inventory: {} }, action) => {
+const inventory = (
+  inventory = { inventories: [], inventory: {}, loading: false },
+  action
+) => {
   switch (action.type) {
+    case "START_LOADING":
+      return { ...inventory, loading: true };
+
+    case "END_LOADING":
+      return { ...inventory, loading: false };
+
     case "FETCH_ALL":
       return { ...inventory, inventories: action.payload };
 

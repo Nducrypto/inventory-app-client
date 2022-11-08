@@ -13,6 +13,7 @@ import {
   Slide,
   Tooltip,
   Grid,
+  CircularProgress,
 } from "@mui/material";
 import { Delete, MoneyOff, MoreHoriz, Visibility } from "@mui/icons-material";
 import { useStateContext } from "../../States/Context/ContextProvider";
@@ -22,14 +23,19 @@ import moment from "moment";
 const Products = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setCurrentId, showByCreator, search, prompt } = useStateContext();
+  const { setCurrentId, showByCreator, loading, search, prompt } =
+    useStateContext();
 
   const searching = showByCreator.filter(
     (p) =>
-      p.category.toLowerCase().includes(search) || p.category.includes(search)
+      p.category.toLowerCase().includes(search) ||
+      p.category.includes(search) ||
+      p.type.toLowerCase().includes(search) ||
+      p.type.includes(search)
   );
 
   const changer = search ? searching : showByCreator;
+
   return (
     <>
       {!prompt && (
@@ -53,67 +59,73 @@ const Products = () => {
                   overflow: "auto",
                 }}
               >
-                {changer.map((t) => (
-                  <Slide
-                    direction="down"
-                    in
-                    mountOnEnter
-                    unmountOnExit
-                    key={t._id}
-                  >
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar
-                          sx={{
-                            backgroundColor:
-                              t.type === "Incoming" ? "green" : "red",
-                          }}
-                        >
-                          <MoneyOff />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={`${t.category} - ${t.quantity}`}
-                        secondary={`$${t.amount} - ${moment(t.date).format(
-                          "M Do YYYY"
-                        )}`}
-                      />
-                      <ListItemSecondaryAction>
-                        <Tooltip title="Delete">
-                          <IconButton
-                            edge="center"
-                            arial-label="delete"
-                            onClick={() => dispatch(deleteTransaction(t._id))}
+                {loading ? (
+                  <CircularProgress />
+                ) : !changer.length & !loading ? (
+                  <div style={{ fontSize: "3rem" }}>No Transaction</div>
+                ) : (
+                  changer.map((t) => (
+                    <Slide
+                      direction="down"
+                      in
+                      mountOnEnter
+                      unmountOnExit
+                      key={t._id}
+                    >
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar
+                            sx={{
+                              backgroundColor:
+                                t.type === "Incoming" ? "green" : "red",
+                            }}
                           >
-                            <Delete />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit">
-                          <IconButton
-                            edge="center"
-                            arial-label="edit"
-                            onClick={() => setCurrentId(t._id)}
-                          >
-                            <MoreHoriz />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="view">
-                          <IconButton
-                            edge="end"
-                            arial-label="view"
-                            onClick={() =>
-                              navigate(`/${t.category}`, {
-                                state: { id: t._id },
-                              })
-                            }
-                          >
-                            <Visibility />
-                          </IconButton>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </Slide>
-                ))}
+                            <MoneyOff />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={`${t.category} - ${t.quantity}`}
+                          secondary={`$${t.amount} - ${moment(t.date).format(
+                            "M Do YYYY"
+                          )}`}
+                        />
+                        <ListItemSecondaryAction>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              edge="center"
+                              arial-label="delete"
+                              onClick={() => dispatch(deleteTransaction(t._id))}
+                            >
+                              <Delete />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Edit">
+                            <IconButton
+                              edge="center"
+                              arial-label="edit"
+                              onClick={() => setCurrentId(t._id)}
+                            >
+                              <MoreHoriz />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="view">
+                            <IconButton
+                              edge="end"
+                              arial-label="view"
+                              onClick={() =>
+                                navigate(`/${t.category}`, {
+                                  state: { id: t._id },
+                                })
+                              }
+                            >
+                              <Visibility />
+                            </IconButton>
+                          </Tooltip>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </Slide>
+                  ))
+                )}
               </MUIList>
             </div>
           </Grid>

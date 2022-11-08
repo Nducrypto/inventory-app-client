@@ -19,7 +19,7 @@ export const ContextProvider = ({ children }) => {
   const [search, setSearch] = useState("");
   const [prompt, setPrompt] = useState(false);
 
-  const { inventories } = useSelector((state) => state.inventory);
+  const { inventories, loading } = useSelector((state) => state.inventory);
 
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
@@ -143,6 +143,7 @@ export const ContextProvider = ({ children }) => {
     <stateContext.Provider
       value={{
         showByCreator,
+        loading,
         form,
         activeMenu,
         setActiveMenu,
