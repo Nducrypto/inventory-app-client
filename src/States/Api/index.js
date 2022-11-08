@@ -7,8 +7,6 @@ const API = axios.create({
 
 export const fetchInventories = () => API.get("/page");
 
-export const fetchInventory = (id) => API.get(`/page/${id}`);
-
 export const createTransaction = (newTransaction) =>
   API.post("/page", newTransaction);
 

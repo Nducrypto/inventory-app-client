@@ -11,14 +11,6 @@ export const getTransactions = () => async (dispatch) => {
     console.log(error);
   }
 };
-export const getTransaction = (id) => async (dispatch) => {
-  try {
-    const { data } = await api.fetchInventory(id);
-    dispatch({ type: "FETCH_ONE", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export const createTransaction = (transaction) => async (dispatch) => {
   try {

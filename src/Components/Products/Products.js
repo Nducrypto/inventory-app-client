@@ -77,7 +77,7 @@ const Products = () => {
                           <Avatar
                             sx={{
                               backgroundColor:
-                                t.type === "Incoming" ? "green" : "red",
+                                t.type === "Incoming" ? "blue" : "red",
                             }}
                           >
                             <MoneyOff />
@@ -112,11 +112,11 @@ const Products = () => {
                             <IconButton
                               edge="end"
                               arial-label="view"
-                              onClick={() =>
+                              onClick={() => {
                                 navigate(`/${t.category}`, {
                                   state: { id: t._id },
-                                })
-                              }
+                                });
+                              }}
                             >
                               <Visibility />
                             </IconButton>

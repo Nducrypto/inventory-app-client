@@ -1,7 +1,4 @@
-const inventory = (
-  inventory = { inventories: [], inventory: {}, loading: false },
-  action
-) => {
+const inventory = (inventory = { inventories: [], loading: false }, action) => {
   switch (action.type) {
     case "START_LOADING":
       return { ...inventory, loading: true };
@@ -11,9 +8,6 @@ const inventory = (
 
     case "FETCH_ALL":
       return { ...inventory, inventories: action.payload };
-
-    case "FETCH_ONE":
-      return { ...inventory, inventory: action.payload };
 
     case "CREATE":
       return {

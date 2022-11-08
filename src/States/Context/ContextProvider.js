@@ -24,7 +24,9 @@ export const ContextProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
 
-  const showByCreator = inventories.filter((p) => p.creator === creator);
+  const showByCreator = inventories.filter((p) =>
+    creator ? p.creator === creator : null
+  );
 
   // WATCH
   const inComingWatch = showByCreator.filter(

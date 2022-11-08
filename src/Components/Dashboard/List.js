@@ -47,21 +47,21 @@ const List = () => {
         ) : !changer.length & !loading ? (
           <div style={{ fontSize: "3rem" }}>No Transaction</div>
         ) : (
-          changer.map((t) => (
-            <Slide direction="down" in mountOnEnter unmountOnExit key={t._id}>
+          changer.map((p) => (
+            <Slide direction="down" in mountOnEnter unmountOnExit key={p._id}>
               <ListItem>
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      backgroundColor: t.type === "Incoming" ? "green" : "red",
+                      backgroundColor: p.type === "Incoming" ? "blue" : "red",
                     }}
                   >
                     <MoneyOff />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${t.category} - ${t.quantity}`}
-                  secondary={`$${t.amount} - ${moment(t.date).format(
+                  primary={`${p.category} - ${p.quantity}`}
+                  secondary={`$${p.amount} - ${moment(p.date).format(
                     "M Do YYYY"
                   )}`}
                 />
@@ -70,7 +70,7 @@ const List = () => {
                     <IconButton
                       // edge="start"
                       arial-label="delete"
-                      onClick={() => dispatch(deleteTransaction(t._id))}
+                      onClick={() => dispatch(deleteTransaction(p._id))}
                     >
                       <Delete />
                     </IconButton>
@@ -79,7 +79,7 @@ const List = () => {
                     <IconButton
                       // edge="false"
                       arial-label="edit"
-                      onClick={() => setCurrentId(t._id)}
+                      onClick={() => setCurrentId(p._id)}
                     >
                       <MoreHoriz />
                     </IconButton>
@@ -88,9 +88,11 @@ const List = () => {
                     <IconButton
                       edge="end"
                       arial-label="view"
-                      onClick={() =>
-                        navigate(`/${t.category}`, { state: { id: t._id } })
-                      }
+                      onClick={() => {
+                        navigate(`/${p.category}`, {
+                          state: { id: p._id },
+                        });
+                      }}
                     >
                       <Visibility />
                     </IconButton>

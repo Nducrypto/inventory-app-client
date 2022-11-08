@@ -10,27 +10,22 @@ import {
   Grid,
 } from "@mui/material";
 
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 import moment from "moment";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getTransaction } from "../../States/Actions/InventoryActions";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useStateContext } from "../../States/Context/ContextProvider";
-
+import useFetch from "../../Hooks/useFetch";
 const Details = () => {
-  const { handleTotal, showByCreator } = useStateContext();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const id = location.state.id;
-  const { inventory } = useSelector((state) => state.inventory);
+  const { category } = useParams();
+  // console.log(category);
+  const id = useLocation().state.id;
+  const { handleTotal, showByCreator } = useStateContext();
+  const { data } = useFetch(`/page/${id}`);
 
-  const recommendedTransactions = showByCreator.filter(
-    (p) => (p._id !== id) & (p.category === inventory.category)
+  const recommendedTransactions = showByCreator.filter((p) =>
+    id ? (p._id !== id) & (p.category === category) : null
   );
-  useEffect(() => {
-    dispatch(getTransaction(id));
-  }, [id, dispatch]);
 
   return (
     <div style={{ marginBottom: "2rem" }}>
@@ -41,19 +36,37 @@ const Details = () => {
           marginTop: { xs: "6rem", md: "3rem", sm: "4rem", lg: "3rem" },
         }}
       >
-        <Typography variant="h5">{inventory.type}</Typography>
-        <Typography variant="h4">{inventory.category}</Typography>
-        <div>{moment(inventory.date).format("MMMM Do YYYY, dddd")}</div>
-        <div>Quantity : {inventory.quantity}</div>
-        <div>Price = ${inventory.price}</div>
-        <div>Total Amount = ${inventory.amount}</div>
+        <Typography variant="h5">{data.type}</Typography>
+        <Typography variant="h4">{data.category}</Typography>
+        <div>{moment(data.date).format("MMMM Do YYYY, dddd, hm:mm")}</div>
+        <div
+          style={{
+            color: data.type === "Incoming" ? "blue" : "red",
+          }}
+        >
+          Quantity : {data.quantity}
+        </div>
+        <div
+          style={{
+            color: data.type === "Incoming" ? "blue" : "red",
+          }}
+        >
+          Price = ${data.price}
+        </div>
+        <div
+          style={{
+            color: data.type === "Incoming" ? "blue" : "red",
+          }}
+        >
+          Total Amount = ${data.amount}
+        </div>
         {/* </>
         )} */}
 
         {/* TOTAL DIV  */}
         <div style={{ marginTop: "2rem" }}>
-          TOTAL {inventory.type} Details of {inventory.category}
-          {handleTotal(inventory.type, inventory.category)}
+          TOTAL {data.type} Details of {data.category}
+          {handleTotal(data.type, data.category)}
         </div>
       </Paper>
       <div
@@ -72,7 +85,7 @@ const Details = () => {
                 avatar={
                   <Avatar
                     sx={{
-                      backgroundColor: t.type === "Incoming" ? "green" : "red",
+                      backgroundColor: t.type === "Incoming" ? "blue" : "red",
                     }}
                   />
                 }
