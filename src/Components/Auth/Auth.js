@@ -90,7 +90,7 @@ const SignUp = () => {
 
         {/* SIGNUP OR SIGN IN FORM TOGGLER */}
         <Typography component="h1" variant="h5">
-          {isSignup ? "Create a new account " : "Log in to Budget-tracker"}
+          {isSignup ? "Create a new account " : "Log in"}
         </Typography>
         <div>{error && error.message}</div>
         {loading && <CircularProgress />}

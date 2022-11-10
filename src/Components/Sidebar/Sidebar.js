@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { MdOutlineCancel } from "react-icons/md";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import { links } from "./Links";
-
+import Auth from "../Auth/Auth";
 import { Tooltip } from "@mui/material";
 
 const Sidebar = () => {
@@ -23,7 +23,7 @@ const Sidebar = () => {
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-md hover:bg-secondary-dark-bg m-2";
 
-  if (!user?.result) return null;
+  if (!user?.result) return <Auth />;
 
   return (
     <div
