@@ -3,7 +3,7 @@ const AuthReducer = (
     authData: null || JSON.parse(localStorage.getItem("profile")),
     loading: false,
     error: null,
-    // singleUser: [],
+    singleUser: [],
   },
   action
 ) => {

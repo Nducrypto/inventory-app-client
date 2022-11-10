@@ -4,12 +4,12 @@ export const login = (formAuth, navigate) => async (dispatch) => {
   dispatch({ type: "LOGIN_START" });
 
   try {
-    dispatch({ type: "START_LOADING" });
+    dispatch({ type: "LOADING_START" });
 
     const { data } = await api.login(formAuth);
 
     dispatch({ type: "LOGIN_SUCCESS", payload: data });
-    dispatch({ type: "END_LOADING" });
+    dispatch({ type: "LOADING_END" });
 
     navigate("/");
   } catch (err) {
