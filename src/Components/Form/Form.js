@@ -15,9 +15,11 @@ import {
 } from "../../States/Actions/InventoryActions";
 import { useSelector, useDispatch } from "react-redux";
 import { useStateContext } from "../../States/Context/ContextProvider";
+import CustomizedSnackbar from "../SnackBar/SnackBar";
 
 const Form = () => {
-  const { form, setForm, initialState, currentId } = useStateContext();
+  const { form, setForm, initialState, currentId, setSnackBarOpen } =
+    useStateContext();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
@@ -43,11 +45,17 @@ const Form = () => {
           creator: creator,
         })
       );
+    } else {
+      dispatch(
+        createTransaction({ ...form, amount: amount, creator: creator })
+      );
     }
-    dispatch(createTransaction({ ...form, amount: amount, creator: creator }));
     setForm(initialState);
+    setSnackBarOpen(true);
   };
+
   if (!user?.result) return null;
+
   return (
     <Grid
       container
@@ -58,78 +66,78 @@ const Form = () => {
         marginBottom: "2rem",
       }}
     >
-      <>
-        <Grid xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Type</InputLabel>
+      <CustomizedSnackbar />
 
-            <Select
-              sx={{ width: "10rem" }}
-              value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value })}
-            >
-              <MenuItem value="Incoming">Incoming</MenuItem>
-              <MenuItem value="Outgoing">Outgoing</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Category</InputLabel>
-            <Select
-              sx={{ width: "10rem" }}
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-            >
-              {products.map((p) => (
-                <MenuItem value={p.item} key={p.item}>
-                  {p.item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid xs={6}>
-          <TextField
-            fullWidth
-            value={form.date}
-            onChange={(e) => setForm({ ...form, date: e.target.value })}
-            type="datetime-local"
-            inputProps={{
-              min: new Date().toISOString().slice(0, 16),
-            }}
-          />
-          <TextField
-            type="Number"
-            value={form.price}
-            label="price"
-            fullWidth
-            onChange={(e) => setForm({ ...form, price: e.target.value })}
-          />
-        </Grid>
-        <Grid xs={6}>
-          <TextField
-            label="quantity"
-            type="Number"
-            fullWidth
-            value={form.quantity}
-            onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-          />
-        </Grid>
+      <Grid xs={6}>
+        <FormControl fullWidth>
+          <InputLabel>Type</InputLabel>
 
-        <Button
-          size="small"
-          sx={{
-            marginTop: "1rem",
-
-            width: { xs: "70%", sm: "50%", lg: "50%", md: "50%" },
+          <Select
+            sx={{ width: "10rem" }}
+            value={form.type}
+            onChange={(e) => setForm({ ...form, type: e.target.value })}
+          >
+            <MenuItem value="Incoming">Incoming</MenuItem>
+            <MenuItem value="Outgoing">Outgoing</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid xs={6}>
+        <FormControl fullWidth>
+          <InputLabel>Category</InputLabel>
+          <Select
+            sx={{ width: "10rem" }}
+            value={form.category}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
+          >
+            {products.map((p) => (
+              <MenuItem value={p.item} key={p.item}>
+                {p.item}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid xs={6}>
+        <TextField
+          fullWidth
+          value={form.date}
+          onChange={(e) => setForm({ ...form, date: e.target.value })}
+          type="datetime-local"
+          inputProps={{
+            min: new Date().toISOString().slice(0, 16),
           }}
-          variant="contained"
-          onClick={handleSubmit}
-        >
-          submit
-        </Button>
-      </>
+        />
+        <TextField
+          type="Number"
+          value={form.price}
+          label="price"
+          fullWidth
+          onChange={(e) => setForm({ ...form, price: e.target.value })}
+        />
+      </Grid>
+      <Grid xs={6}>
+        <TextField
+          label="quantity"
+          type="Number"
+          fullWidth
+          value={form.quantity}
+          onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+        />
+      </Grid>
+
+      <Button
+        size="small"
+        sx={{
+          marginTop: "1rem",
+
+          width: { xs: "70%", sm: "50%", lg: "50%", md: "50%" },
+        }}
+        variant="contained"
+        onClick={handleSubmit}
+      >
+        submit
+      </Button>
     </Grid>
   );
 };

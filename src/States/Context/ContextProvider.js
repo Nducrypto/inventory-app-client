@@ -18,6 +18,7 @@ export const ContextProvider = ({ children }) => {
   const [screenSize, setScreenSize] = useState(undefined);
   const [search, setSearch] = useState("");
   const [prompt, setPrompt] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
 
   const { inventories, loading } = useSelector((state) => state.inventory);
 
@@ -156,6 +157,8 @@ export const ContextProvider = ({ children }) => {
         setSearch,
         prompt,
         setPrompt,
+        snackBarOpen,
+        setSnackBarOpen,
         initialState,
         currentId,
         setCurrentId,
