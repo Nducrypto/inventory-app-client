@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const API = axios.create({
-  baseURL: "https://inventory-api-ckw9.onrender.com/api",
-});
+const API = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 
 // const API = axios.create({ baseURL: "http://localhost:5000/api" });
 
