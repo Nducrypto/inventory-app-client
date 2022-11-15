@@ -103,10 +103,11 @@ const Form = () => {
           fullWidth
           value={form.date}
           onChange={(e) => setForm({ ...form, date: e.target.value })}
-          type="datetime-local"
-          inputProps={{
-            min: new Date().toISOString().slice(0, 16),
-          }}
+          type="date"
+          // type="datetime-local"
+          // inputProps={{
+          //   min: new Date().toISOString().slice(0, 16),
+          // }}
         />
         <TextField
           type="Number"
