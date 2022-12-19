@@ -107,26 +107,6 @@ function App() {
         </div>
       </div>
     </div>
-
-    // <div>
-    //   <Grid container alignItems="center" justifyContent="center">
-    //     {activeMenu && (
-    //       <Grid item xs={12} md={2} sm={5}>
-    //         <Sidebar />
-    //         <button onClick={() => setActiveMenu(!activeMenu)}>cli</button>
-    //       </Grid>
-    //     )}
-    //     <Grid item xs={11} md={9} sm={9}>
-    //       <div style={{ marginTop: "1rem" }}>
-    //         <Routes>
-    //           <Route path="/" element={<Dashboard />} />
-    //           <Route path="/main" element={<Main />} />
-    //           <Route path="/:category/:id" element={<Details />} />
-    //         </Routes>
-    //       </div>
-    //     </Grid>
-    //   </Grid>
-    // </div>
   );
 }
 

@@ -16,6 +16,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
+import FormatDate from "../../Utils/FormatDate";
 
 const Form = () => {
   const { form, setForm, initialState, currentId, setSnackBarOpen } =
@@ -104,10 +105,9 @@ const Form = () => {
           value={form.date}
           onChange={(e) => setForm({ ...form, date: e.target.value })}
           type="date"
-          // type="datetime-local"
-          // inputProps={{
-          //   min: new Date().toISOString().slice(0, 16),
-          // }}
+          inputProps={{
+            min: FormatDate(new Date()),
+          }}
         />
         <TextField
           type="Number"

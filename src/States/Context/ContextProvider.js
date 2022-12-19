@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { useSelector } from "react-redux";
+import FormatDate from "../../Utils/FormatDate";
 
 const stateContext = createContext();
 
@@ -7,7 +8,7 @@ export const ContextProvider = ({ children }) => {
   const initialState = {
     type: "",
     category: "",
-    date: new Date(),
+    date: FormatDate(new Date()),
     quantity: "",
     price: "",
     amount: "",
