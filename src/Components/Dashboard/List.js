@@ -22,7 +22,8 @@ import moment from "moment";
 const List = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setCurrentId, showByCreator, loading, search } = useStateContext();
+  const { setCurrentId, showByCreator, loading, search, setSnackBarOpen } =
+    useStateContext();
 
   const searching = showByCreator.filter(
     (p) =>
@@ -34,76 +35,87 @@ const List = () => {
 
   const changer = search ? searching : showByCreator;
   return (
-    <Paper sx={{ marginTop: "2rem" }}>
-      <MUIList
-        dense={false}
-        sx={{
-          maxHeight: "150px",
-          overflow: "auto",
-        }}
-      >
-        {loading ? (
-          <CircularProgress />
-        ) : !changer.length & !loading ? (
-          <div style={{ fontSize: "3rem" }}>No Transaction</div>
-        ) : (
-          changer.map((p) => (
-            <Slide direction="down" in mountOnEnter unmountOnExit key={p._id}>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar
-                    sx={{
-                      backgroundColor: p.type === "Incoming" ? "blue" : "red",
-                    }}
-                  >
-                    <MoneyOff />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${p.category} - ${p.quantity}`}
-                  secondary={`$${p.amount} - ${moment(p.date).format(
-                    "M Do YYYY"
-                  )}`}
-                />
-                <ListItemSecondaryAction>
-                  <Tooltip title="Delete">
-                    <IconButton
-                      // edge="start"
-                      arial-label="delete"
-                      onClick={() => dispatch(deleteTransaction(p._id))}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Edit">
-                    <IconButton
-                      // edge="false"
-                      arial-label="edit"
-                      onClick={() => setCurrentId(p._id)}
-                    >
-                      <MoreHoriz />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="view">
-                    <IconButton
-                      edge="end"
-                      arial-label="view"
-                      onClick={() => {
-                        navigate(`/${p.category}`, {
-                          state: { id: p._id },
-                        });
-                      }}
-                    >
-                      <Visibility />
-                    </IconButton>
-                  </Tooltip>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </Slide>
-          ))
-        )}
-      </MUIList>
-    </Paper>
+    <div style={{ marginTop: "2rem" }}>
+      {!changer.length & !loading ? (
+        <div style={{ fontSize: "3rem" }}>No Transaction</div>
+      ) : (
+        <Paper elevation={9}>
+          <MUIList
+            dense={false}
+            sx={{
+              maxHeight: "500px",
+              overflow: "auto",
+            }}
+          >
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              changer.map((p) => (
+                <Slide
+                  direction="down"
+                  in
+                  mountOnEnter
+                  unmountOnExit
+                  key={p._id}
+                >
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar
+                        sx={{
+                          backgroundColor:
+                            p.type === "Incoming" ? "blue" : "red",
+                        }}
+                      >
+                        <MoneyOff />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={`${p.category} - ${p.quantity}`}
+                      secondary={`$${p.amount} - ${moment(p.date).format(
+                        "M Do YYYY"
+                      )}`}
+                    />
+                    <ListItemSecondaryAction>
+                      <Tooltip title="Delete">
+                        <IconButton
+                          arial-label="delete"
+                          onClick={() =>
+                            dispatch(deleteTransaction(p._id, setSnackBarOpen))
+                          }
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Edit">
+                        <IconButton
+                          arial-label="edit"
+                          onClick={() => setCurrentId(p._id)}
+                        >
+                          <MoreHoriz />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="view">
+                        <IconButton
+                          edge="end"
+                          arial-label="view"
+                          onClick={() => {
+                            navigate(`/${p.category}`, {
+                              state: { id: p._id },
+                            });
+                          }}
+                        >
+                          <Visibility />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </Slide>
+              ))
+            )}
+          </MUIList>
+        </Paper>
+      )}
+    </div>
   );
 };
 

@@ -4,12 +4,11 @@
     background-color: rgba(0, 0, 0, 0.600);
     position: fixed;
     top: 0;
-    left: 0;
+    left: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 500000000;
-    /* margin-left: 4rem; */
+    z-index: 500;
 }
 
 
@@ -18,13 +17,8 @@
         width: 100vw;
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.600);
-        position: fixed;
         top: 0;
         left: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 500000000;
         margin-left: 2rem;
 
     }

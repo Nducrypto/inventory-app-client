@@ -1,0 +1,71 @@
+.featured {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .featuredItemRevenue {
+    background-color: rgb(57, 57, 77);
+    flex: 1;
+    margin: 0px 20px;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  }
+  
+  .featuredItemSales {
+    background-color: green;
+    flex: 1;
+    margin: 0px 20px;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  }
+  
+  .featuredItemCost {
+    background-color: red;
+    flex: 1;
+    margin: 0px 20px;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  }
+  
+  
+  
+  .featuredHeader{
+      font-size: 20px;
+      color: white;
+  }
+  
+  .featuredMoneyContainer{
+      margin: 10px 10px;
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      color: white;
+
+  }
+  
+
+  @media (max-width: 600px) {
+    
+    .featuredMoneyContainer{
+        font-size: 11px;
+        color: white;
+    }   
+      
+  .featuredHeader{
+    font-size: 14px;
+    color: white;
+}
+}
+  
+  
+ 

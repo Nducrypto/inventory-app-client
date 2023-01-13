@@ -12,19 +12,22 @@ export const getTransactions = () => async (dispatch) => {
   }
 };
 
-export const createTransaction = (transaction) => async (dispatch) => {
-  try {
-    const { data } = await api.createTransaction(transaction);
-    dispatch({ type: "CREATE", payload: data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const createTransaction =
+  (transaction, setSnackBarOpen) => async (dispatch) => {
+    try {
+      const { data } = await api.createTransaction(transaction);
+      dispatch({ type: "CREATE", payload: data });
+      setSnackBarOpen("create");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-export const deleteTransaction = (id) => async (dispatch) => {
+export const deleteTransaction = (id, setSnackBarOpen) => async (dispatch) => {
   try {
     await api.deleteTransaction(id);
     dispatch({ type: "DELETE", payload: id });
+    setSnackBarOpen("delete");
   } catch (error) {
     console.log(error);
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { MdOutlineCancel } from "react-icons/md";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import { links } from "./Links";
@@ -8,7 +8,7 @@ import { Tooltip } from "@mui/material";
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, prompt } = useStateContext();
-
+  const location = useLocation();
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const handleCloseSidebar = () => {
@@ -17,18 +17,30 @@ const Sidebar = () => {
     }
   };
 
+  const handleBackground = (name) => {
+    if ((location.pathname === "/") & (name === "Home")) {
+      return "orange";
+    } else if (
+      (location.pathname === "/addproduct") &
+      (name === "AddProduct")
+    ) {
+      return "orange";
+    } else if ((location.pathname === "/profile") & (name === "Profile")) {
+      return "orange";
+    } else {
+      return "darkred";
+    }
+  };
+
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2";
-
-  const normalLink =
-    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-md hover:bg-secondary-dark-bg m-2";
 
   return (
     <>
       {prompt ? null : (
         <div
-          className="ml-3 h-screen md:overflow-hidden overflow-auto 
-    md:hover:overflow-auto pb-10"
+          className="h-screen md:overflow-hidden overflow-auto 
+    md:hover:overflow-auto"
         >
           {!user?.result ? (
             <>
@@ -73,32 +85,19 @@ const Sidebar = () => {
 
                 <div className="mt-10">
                   {links.map((item) => (
-                    <div key={item.title}>
-                      <p
-                        style={{ color: "white" }}
-                        className="m-3 mt-4 uppercase"
-                      >
-                        {item.title}
-                      </p>
-
-                      {item.link.map((Link) => (
-                        <NavLink
-                          to={`/${Link.name}`}
-                          key={Link.name}
-                          onClick={handleCloseSidebar}
-                          className={({ isActive }) =>
-                            isActive ? activeLink : normalLink
-                          }
-                          style={({ isActive }) => ({
-                            backgroundColor: isActive ? "red" : "",
-                            color: "white",
-                          })}
-                        >
-                          {Link.icon}
-                          <span>{Link.name}</span>
-                        </NavLink>
-                      ))}
-                    </div>
+                    <NavLink
+                      to={`/${item.url}`}
+                      key={item.name}
+                      onClick={handleCloseSidebar}
+                      className={activeLink}
+                      style={{
+                        backgroundColor: handleBackground(item.name),
+                        color: "white",
+                      }}
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </NavLink>
                   ))}
                 </div>
               </>

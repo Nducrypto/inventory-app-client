@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -6,7 +6,7 @@ import {
   Select,
   TextField,
   Button,
-  Grid,
+  Paper,
 } from "@mui/material";
 import { products } from "../../Objects/Objects";
 import {
@@ -18,9 +18,18 @@ import { useStateContext } from "../../States/Context/ContextProvider";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
 import FormatDate from "../../Utils/FormatDate";
 
+const initialState = {
+  type: "",
+  category: "",
+  date: FormatDate(new Date()),
+  quantity: "",
+  price: "",
+  amount: "",
+};
+
 const Form = () => {
-  const { form, setForm, initialState, currentId, setSnackBarOpen } =
-    useStateContext();
+  const [form, setForm] = useState(initialState);
+  const { currentId, setSnackBarOpen, snackBarOpen } = useStateContext();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
@@ -48,98 +57,115 @@ const Form = () => {
       );
     } else {
       dispatch(
-        createTransaction({ ...form, amount: amount, creator: creator })
+        createTransaction(
+          { ...form, amount: amount, creator: creator },
+          setSnackBarOpen
+        )
       );
     }
     setForm(initialState);
-    setSnackBarOpen(true);
   };
 
   if (!user?.result) return null;
 
   return (
-    <Grid
-      container
-      alignItems="center"
-      justifyContent="center"
+    <Paper
+      elevation={7}
       sx={{
+        width: "70%",
         marginTop: { xs: "2rem", lg: "0.4rem", md: "-0.7rem", sm: "1rem" },
         marginBottom: "2rem",
+        padding: "1rem 1rem 1rem 1rem",
+        margin: "0 0 0 13%",
       }}
     >
-      <CustomizedSnackbar />
+      <CustomizedSnackbar
+        message={
+          snackBarOpen === "delete"
+            ? "Deleted Successfully"
+            : snackBarOpen === "create"
+            ? "Created Successfully"
+            : ""
+        }
+      />
 
-      <Grid xs={6}>
-        <FormControl fullWidth>
-          <InputLabel>Type</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel>Type</InputLabel>
 
-          <Select
-            sx={{ width: "10rem" }}
-            value={form.type}
-            onChange={(e) => setForm({ ...form, type: e.target.value })}
-          >
-            <MenuItem value="Incoming">Incoming</MenuItem>
-            <MenuItem value="Outgoing">Outgoing</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid xs={6}>
-        <FormControl fullWidth>
-          <InputLabel>Category</InputLabel>
-          <Select
-            sx={{ width: "10rem" }}
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-          >
-            {products.map((p) => (
-              <MenuItem value={p.item} key={p.item}>
-                {p.item}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid xs={6}>
-        <TextField
+        <Select
           fullWidth
-          value={form.date}
-          onChange={(e) => setForm({ ...form, date: e.target.value })}
-          type="date"
-          inputProps={{
-            min: FormatDate(new Date()),
+          value={form.type}
+          onChange={(e) => setForm({ ...form, type: e.target.value })}
+        >
+          <MenuItem value="Incoming">Incoming</MenuItem>
+          <MenuItem value="Outgoing">Outgoing</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Category</InputLabel>
+        <Select
+          sx={{
+            marginTop: ".5rem",
           }}
-        />
-        <TextField
-          type="Number"
-          value={form.price}
-          label="price"
           fullWidth
-          onChange={(e) => setForm({ ...form, price: e.target.value })}
-        />
-      </Grid>
-      <Grid xs={6}>
-        <TextField
-          label="quantity"
-          type="Number"
-          fullWidth
-          value={form.quantity}
-          onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-        />
-      </Grid>
+          value={form.category}
+          onChange={(e) => setForm({ ...form, category: e.target.value })}
+        >
+          {products.map((p) => (
+            <MenuItem value={p.item} key={p.item}>
+              {p.item}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-      <Button
-        size="small"
+      <TextField
         sx={{
-          marginTop: "1rem",
-
-          width: { xs: "70%", sm: "50%", lg: "50%", md: "50%" },
+          marginTop: ".5rem",
         }}
-        variant="contained"
-        onClick={handleSubmit}
-      >
-        submit
-      </Button>
-    </Grid>
+        fullWidth
+        value={form.date}
+        onChange={(e) => setForm({ ...form, date: e.target.value })}
+        type="date"
+        // inputProps={{
+        //   min: FormatDate(new Date()),
+        // }}
+      />
+      <TextField
+        sx={{
+          marginTop: ".5rem",
+        }}
+        type="number"
+        value={form.price}
+        label="price"
+        fullWidth
+        onChange={(e) => setForm({ ...form, price: e.target.value })}
+      />
+
+      <TextField
+        sx={{
+          marginTop: ".5rem",
+        }}
+        label="quantity"
+        type="number"
+        fullWidth
+        value={form.quantity}
+        onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+      />
+      <div>
+        <Button
+          size="small"
+          sx={{
+            marginTop: "1rem",
+            width: "100%",
+          }}
+          variant="contained"
+          onClick={handleSubmit}
+        >
+          submit
+        </Button>
+      </div>
+    </Paper>
   );
 };
 

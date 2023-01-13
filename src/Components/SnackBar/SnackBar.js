@@ -1,8 +1,8 @@
-import { Snackbar, Alert, Container, Slide } from "@mui/material";
+import { Snackbar, Alert, Container } from "@mui/material";
 import React from "react";
 import { useStateContext } from "../../States/Context/ContextProvider";
 
-const CustomizedSnackbar = () => {
+const CustomizedSnackbar = ({ message }) => {
   const { setSnackBarOpen, snackBarOpen } = useStateContext();
 
   const handleClose = (event, reason) => {
@@ -10,9 +10,9 @@ const CustomizedSnackbar = () => {
     setSnackBarOpen(false);
   };
 
-  const TransitionLeft = (props) => {
-    return <Slide {...props} direction="left" />;
-  };
+  // const TransitionLeft = (props) => {
+  //   return <Slide {...props} direction="left" />;
+  // };
 
   return (
     <Container
@@ -22,7 +22,7 @@ const CustomizedSnackbar = () => {
       }}
     >
       <Snackbar
-        TransitionComponent={TransitionLeft}
+        // TransitionComponent={TransitionLeft}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={snackBarOpen}
         autoHideDuration={3000}
@@ -34,7 +34,7 @@ const CustomizedSnackbar = () => {
           elevation={6}
           variant="filled"
         >
-          Transaction Successfully Created
+          {message}
         </Alert>
       </Snackbar>
     </Container>

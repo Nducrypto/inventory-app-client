@@ -38,7 +38,7 @@ const Details = () => {
       >
         <Typography variant="h5">{data.type}</Typography>
         <Typography variant="h4">{data.category}</Typography>
-        <div>{moment(data.date).format("MMMM Do YYYY, dddd, hm:mm")}</div>
+        <div>{moment(data.date).format("MMMM Do YYYY, dddd,")}</div>
         <div
           style={{
             color: data.type === "Incoming" ? "blue" : "red",
@@ -60,8 +60,6 @@ const Details = () => {
         >
           Total Amount = ${data.amount}
         </div>
-        {/* </>
-        )} */}
 
         {/* TOTAL DIV  */}
         <div style={{ marginTop: "2rem" }}>

@@ -5,35 +5,22 @@ import { FiShoppingBag } from "react-icons/fi";
 
 export const links = [
   {
-    title: "Dashboard",
-    link: [
-      {
-        name: "home",
-        icon: <FiShoppingBag />,
-      },
-    ],
-  },
-  {
-    title: "Products",
-    link: [
-      {
-        name: "products",
-        icon: <FiShoppingBag />,
-      },
-    ],
+    name: "Home",
+    url: "",
+    icon: <FiShoppingBag />,
   },
 
   {
-    title: "Profile",
-    link: [
-      {
-        name: "profile",
-        icon: <AiOutlineShoppingCart />,
-      },
-      // {
-      //   name: "profile",
-      //   icon: <RiContactsLine />,
-      // },
-    ],
+    name: "AddProduct",
+    url: "addproduct",
+
+    icon: <FiShoppingBag />,
+  },
+
+  {
+    name: "Profile",
+    url: "profile",
+
+    icon: <AiOutlineShoppingCart />,
   },
 ];

@@ -1,19 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import FormatDate from "../../Utils/FormatDate";
+// import FormatDate from "../../Utils/FormatDate";
 
 const stateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const initialState = {
-    type: "",
-    category: "",
-    date: FormatDate(new Date()),
-    quantity: "",
-    price: "",
-    amount: "",
-  };
-  const [form, setForm] = useState(initialState);
   const [currentId, setCurrentId] = useState();
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
@@ -148,19 +139,16 @@ export const ContextProvider = ({ children }) => {
       value={{
         showByCreator,
         loading,
-        form,
         activeMenu,
         setActiveMenu,
         screenSize,
         setScreenSize,
-        setForm,
         search,
         setSearch,
         prompt,
         setPrompt,
         snackBarOpen,
         setSnackBarOpen,
-        initialState,
         currentId,
         setCurrentId,
         inComingWatch,
