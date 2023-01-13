@@ -4,6 +4,8 @@
     justify-content: space-between;
   }
   
+ 
+
   .featuredItemRevenue {
     background-color: rgb(57, 57, 77);
     flex: 1;
@@ -14,6 +16,10 @@
     -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }
+  .featuredItemRevenue:hover {
+    transform: scale(1.09);
+    /* transition: 1s ease-out; */
+}
   
   .featuredItemSales {
     background-color: green;
@@ -25,7 +31,10 @@
     -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }
-  
+  .featuredItemSales:hover {
+    transform: scale(1.09);
+}
+
   .featuredItemCost {
     background-color: red;
     flex: 1;
@@ -37,7 +46,9 @@
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }
   
-  
+  .featuredItemCost:hover {
+    transform: scale(1.09);
+}
   
   .featuredHeader{
       font-size: 20px;

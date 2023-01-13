@@ -29,7 +29,8 @@ const initialState = {
 
 const Form = () => {
   const [form, setForm] = useState(initialState);
-  const { currentId, setSnackBarOpen, snackBarOpen } = useStateContext();
+  const { currentId, setSnackBarOpen, snackBarOpen, loading } =
+    useStateContext();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
@@ -127,9 +128,9 @@ const Form = () => {
         value={form.date}
         onChange={(e) => setForm({ ...form, date: e.target.value })}
         type="date"
-        // inputProps={{
-        //   min: FormatDate(new Date()),
-        // }}
+        inputProps={{
+          min: FormatDate(new Date()),
+        }}
       />
       <TextField
         sx={{
@@ -161,6 +162,14 @@ const Form = () => {
           }}
           variant="contained"
           onClick={handleSubmit}
+          disabled={
+            !form.type ||
+            !form.category ||
+            !form.date ||
+            !form.price ||
+            !form.quantity ||
+            loading
+          }
         >
           submit
         </Button>

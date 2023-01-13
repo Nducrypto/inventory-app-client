@@ -20,8 +20,8 @@ const Percentage = () => {
         <span className="featuredHeader">Revenue</span>
         <div className="featuredMoneyContainer">
           {/* %{Math.ceil(Intl.NumberFormat().format(total))}% */}%
-          {Intl.NumberFormat().format(total)}
-          {!total.length === 0 ? (
+          {Intl.NumberFormat().format(!total ? 0 : total)}
+          {!total === 0 ? (
             <ArrowDropUp />
           ) : total < 0 ? (
             <ArrowDownward fontSize="small" sx={{ color: "red" }} />

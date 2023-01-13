@@ -15,7 +15,11 @@ export const getTransactions = () => async (dispatch) => {
 export const createTransaction =
   (transaction, setSnackBarOpen) => async (dispatch) => {
     try {
+      dispatch({ type: "START_LOADING" });
+
       const { data } = await api.createTransaction(transaction);
+      dispatch({ type: "END_LOADING" });
+
       dispatch({ type: "CREATE", payload: data });
       setSnackBarOpen("create");
     } catch (error) {
