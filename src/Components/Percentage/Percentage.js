@@ -13,17 +13,18 @@ const Percentage = () => {
   const outgoing = showByCreator.filter((p) => p.type === "Outgoing");
   const totalIncome = incoming.reduce((x, y) => x + y.amount, 0);
   const totalOutgoing = outgoing.reduce((x, y) => x + y.amount, 0);
-  const total = (totalOutgoing / totalIncome) * 100;
+  const total = totalOutgoing - totalIncome;
+  const profitPercent = (total / totalIncome) * 100;
   return (
     <div className="featured">
       <div className="featuredItemRevenue">
         <span className="featuredHeader">Revenue</span>
         <div className="featuredMoneyContainer">
           {/* %{Math.ceil(Intl.NumberFormat().format(total))}% */}%
-          {Intl.NumberFormat().format(!total ? 0 : total)}
-          {!total === 0 ? (
+          {Intl.NumberFormat().format(!profitPercent ? 0 : profitPercent)}
+          {!profitPercent === 0 ? (
             <ArrowDropUp />
-          ) : total < 0 ? (
+          ) : profitPercent < 0 ? (
             <ArrowDownward fontSize="small" sx={{ color: "red" }} />
           ) : (
             <ArrowUpward fontSize="small" sx={{ color: "yellowgreen" }} />

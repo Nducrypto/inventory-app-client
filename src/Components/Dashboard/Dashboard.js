@@ -47,7 +47,7 @@ const Sidebar = () => {
       quantityRemaining: inShoeReducedQuantity - outShoeReducedQuantity,
       totalCostAmount: inShoeReducedAmount,
       amountSold: outShoeReducedAmount,
-      subTotal: inShoeReducedAmount - outShoeReducedAmount,
+      profit: outShoeReducedAmount - inShoeReducedAmount,
     },
     {
       product: "Watch",
@@ -56,7 +56,7 @@ const Sidebar = () => {
       quantityRemaining: inWatchReducedQuan - outWatchReducedQuan,
       totalCostAmount: inWatchReducedAmount,
       amountSold: outWatchReducedAmount,
-      subTotal: inWatchReducedAmount - outWatchReducedAmount,
+      profit: outWatchReducedAmount - inWatchReducedAmount,
     },
     {
       product: "Cloth",
@@ -65,7 +65,7 @@ const Sidebar = () => {
       quantityRemaining: inClothReducedQuantity - outClothReducedQuantity,
       totalCostAmount: inClothReducedAmount,
       amountSold: outClothReducedAmount,
-      subTotal: inClothReducedAmount - outClothReducedAmount,
+      profit: outClothReducedAmount - inClothReducedAmount,
     },
     {
       product: "Door",
@@ -74,7 +74,7 @@ const Sidebar = () => {
       quantityRemaining: inDoorReducedQuantity - outDoorReducedQuantity,
       totalCostAmount: inDoorReducedAmount,
       amountSold: outDoorReducedAmount,
-      subTotal: inDoorReducedAmount - outDoorReducedAmount,
+      profit: outDoorReducedAmount - inDoorReducedAmount,
     },
     {
       product: "Bag",
@@ -83,7 +83,8 @@ const Sidebar = () => {
       quantityRemaining: inBagReducedQuantity - outBagReducedQuantity,
       totalCostAmount: inBagReducedAmount,
       amountSold: outBagReducedAmount,
-      subTotal: inBagReducedAmount - outBagReducedAmount,
+      profit: outBagReducedAmount - inBagReducedAmount,
+      // subTotal: inBagReducedAmount - outBagReducedAmount,
     },
   ];
 
@@ -113,13 +114,13 @@ const Sidebar = () => {
                 Quan Remaining
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Total Cost&nbsp;($)
+                Total Cost&nbsp;(&#8358;)
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Amount Sold&nbsp;($)
+                Amount Sold&nbsp;(&#8358;)
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Sub Total&nbsp;($)
+                Profit&nbsp;(&#8358;)
               </TableCell>
             </TableRow>
           </TableHead>
@@ -154,7 +155,7 @@ const Sidebar = () => {
                   {row.amountSold}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "green" }}>
-                  {row.subTotal}
+                  {row.profit}
                 </TableCell>
               </TableRow>
             ))}

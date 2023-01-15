@@ -70,10 +70,12 @@ const List = () => {
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={`${p.category} - ${p.quantity}`}
-                      secondary={`$${p.amount} - ${moment(p.date).format(
-                        "M Do YYYY"
-                      )}`}
+                      primary={`
+                      ${p.category} - ${p.quantity}`}
+                      secondary={`
+                      #${Intl.NumberFormat().format(p.amount)} - ${moment(
+                        p.date
+                      ).format("Do/M/YYYY")}`}
                     />
                     <ListItemSecondaryAction>
                       <Tooltip title="Delete">
