@@ -17,7 +17,6 @@ import {
 import { Delete, MoneyOff, MoreHoriz, Visibility } from "@mui/icons-material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
 
 const List = () => {
   const navigate = useNavigate();
@@ -71,11 +70,8 @@ const List = () => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={`
-                      ${p.category} - ${p.quantity}`}
-                      secondary={`
-                      #${Intl.NumberFormat().format(p.amount)} - ${moment(
-                        p.date
-                      ).format("Do/M/YYYY")}`}
+                      ${p.category} - ${p.quantity}
+                      `}
                     />
                     <ListItemSecondaryAction>
                       <Tooltip title="Delete">
@@ -89,17 +85,12 @@ const List = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Edit">
-                        <IconButton
-                          arial-label="edit"
-                          onClick={() => setCurrentId(p._id)}
-                        >
+                        <IconButton onClick={() => setCurrentId(p._id)}>
                           <MoreHoriz />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="view">
                         <IconButton
-                          edge="end"
-                          arial-label="view"
                           onClick={() => {
                             navigate(`/${p.category}`, {
                               state: { id: p._id },

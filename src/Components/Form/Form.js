@@ -8,15 +8,14 @@ import {
   Button,
   Paper,
 } from "@mui/material";
-import { products } from "../../Objects/Objects";
 import {
   createTransaction,
   updateTransaction,
 } from "../../States/Actions/InventoryActions";
-import { useSelector, useDispatch } from "react-redux";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
 import FormatDate from "../../Utils/FormatDate";
+import { useDispatch } from "react-redux";
 
 const initialState = {
   type: "",
@@ -29,42 +28,68 @@ const initialState = {
 
 const Form = () => {
   const [form, setForm] = useState(initialState);
-  const { currentId, setSnackBarOpen, snackBarOpen, loading } =
-    useStateContext();
+  const {
+    currentId,
+    setCurrentId,
+    setSnackBarOpen,
+    snackBarOpen,
+    loading,
+    showByCreator,
+    setError,
+    error,
+    openBackDrop,
+    setOpenBackDrop,
+  } = useStateContext();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
 
-  const { inventories } = useSelector((state) => state.inventory);
-
-  const clickEdith = inventories.find((p) =>
+  const clickEdith = showByCreator.find((p) =>
     currentId ? p._id === currentId : null
   );
-  const amount = form.price * form.quantity;
+  const totalCost = form.price * form.quantity;
   useEffect(() => {
     if (currentId) {
       setForm(clickEdith);
     }
   }, [clickEdith, setForm, currentId]);
 
+  // ===== HANDLESUBMIT ====
   const handleSubmit = () => {
-    if (currentId) {
+    const findMe = showByCreator?.find(
+      (p) =>
+        p.category.toLowerCase().includes(form.category) ||
+        p.category.toUpperCase().includes(form.category) ||
+        p.category.includes(form.category)
+    );
+
+    if (findMe && findMe.quantity < form.quantity && form.type === "Outgoing") {
+      setError(true);
+    } else if (!findMe && form.type === "Outgoing") {
+      setError(true);
+    } else if (currentId) {
       dispatch(
-        updateTransaction(currentId, {
-          ...form,
-          amount: amount,
-          creator: creator,
-        })
+        updateTransaction(
+          currentId,
+          {
+            ...form,
+            totalCost: totalCost,
+            creator: creator,
+          },
+          setOpenBackDrop
+        )
       );
     } else {
       dispatch(
         createTransaction(
-          { ...form, amount: amount, creator: creator },
-          setSnackBarOpen
+          { ...form, totalCost: totalCost, creator: creator },
+          setSnackBarOpen,
+          setOpenBackDrop
         )
       );
     }
     setForm(initialState);
+    setCurrentId();
   };
 
   if (!user?.result) return null;
@@ -80,6 +105,7 @@ const Form = () => {
         margin: "0 0 0 13%",
       }}
     >
+      {error && <h1>Can't sell morethan you have</h1>}
       <CustomizedSnackbar
         message={
           snackBarOpen === "delete"
@@ -102,23 +128,15 @@ const Form = () => {
           <MenuItem value="Outgoing">Outgoing</MenuItem>
         </Select>
       </FormControl>
-      <FormControl fullWidth>
-        <InputLabel>Category</InputLabel>
-        <Select
-          sx={{
-            marginTop: ".5rem",
-          }}
-          fullWidth
-          value={form.category}
-          onChange={(e) => setForm({ ...form, category: e.target.value })}
-        >
-          {products.map((p) => (
-            <MenuItem value={p.item} key={p.item}>
-              {p.item}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+
+      <TextField
+        sx={{
+          marginTop: ".5rem",
+        }}
+        fullWidth
+        value={form.category}
+        onChange={(e) => setForm({ ...form, category: e.target.value })}
+      />
 
       <TextField
         sx={{
@@ -171,9 +189,24 @@ const Form = () => {
             loading
           }
         >
-          submit
+          {currentId ? "Edit" : "submit"}
         </Button>
       </div>
+      {openBackDrop && (
+        <div>
+          <Button
+            size="small"
+            sx={{
+              marginTop: "1rem",
+              width: "100%",
+            }}
+            variant="contained"
+            onClick={() => setOpenBackDrop((prev) => !prev)}
+          >
+            close
+          </Button>
+        </div>
+      )}
     </Paper>
   );
 };

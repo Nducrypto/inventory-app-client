@@ -1,34 +1,35 @@
 import * as api from "../Api/index";
-
+import {
+  loginLoading,
+  getUserById,
+  userUpdate,
+  loginFailure,
+  loginSuccess,
+} from "../Reducers/AuthReducer";
 export const login = (formAuth, navigate) => async (dispatch) => {
-  dispatch({ type: "LOGIN_START" });
-
   try {
-    dispatch({ type: "LOADING_START" });
+    dispatch(loginLoading());
 
     const { data } = await api.login(formAuth);
 
-    dispatch({ type: "LOGIN_SUCCESS", payload: data });
-    dispatch({ type: "LOADING_END" });
+    dispatch(loginSuccess(data));
 
     navigate("/");
   } catch (err) {
-    dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+    dispatch(loginFailure(err.response.data));
   }
 };
 
 export const register = (formAuth, navigate) => async (dispatch) => {
   try {
-    dispatch({ type: "LOADING_START" });
+    dispatch(loginLoading());
 
     const { data } = await api.register(formAuth);
-    console.log(data);
-    dispatch({ type: "LOGIN_SUCCESS", payload: data });
-    dispatch({ type: "LOADING_END" });
+    dispatch(loginSuccess(data));
 
     navigate("/");
   } catch (err) {
-    dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+    dispatch(loginFailure(err.response.data));
 
     console.log(err);
   }
@@ -36,12 +37,10 @@ export const register = (formAuth, navigate) => async (dispatch) => {
 
 export const getUser = (id) => async (dispatch) => {
   try {
-    dispatch({ type: "LOADING_START" });
+    dispatch(loginLoading());
 
     const { data } = await api.fetchUser(id);
-    dispatch({ type: "FETCH_USER_BY_ID", payload: data });
-
-    dispatch({ type: "LOADING_END" });
+    dispatch(getUserById(data));
   } catch (error) {
     console.log(error);
   }
@@ -51,8 +50,8 @@ export const updateUser = (id, update) => async (dispatch) => {
   try {
     const { data } = await api.updateUser(id, update);
     console.log(data);
-    dispatch({ type: "UPDATE_USER", payload: data });
+    dispatch(userUpdate(data));
   } catch (err) {
-    dispatch({ type: "SET_ERROR", payload: err.data.message });
+    dispatch(loginFailure(err.response.data));
   }
 };

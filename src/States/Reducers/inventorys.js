@@ -1,39 +1,63 @@
-const inventory = (inventory = { inventories: [], loading: false }, action) => {
-  switch (action.type) {
-    case "START_LOADING":
-      return { ...inventory, loading: true };
+import { createSlice } from "@reduxjs/toolkit";
 
-    case "END_LOADING":
-      return { ...inventory, loading: false };
+const inventoriesSlice = createSlice({
+  name: "inventory",
+  initialState: {
+    inventory: [],
+    loading: false,
+    isError: false,
+  },
+  reducers: {
+    startLoading: (state) => {
+      state.loading = true;
+      state.isError = false;
+    },
+    endLoading: (state) => {
+      state.loading = false;
+    },
+    getProducts: (state, action) => {
+      state.inventory = action.payload;
+    },
+    showError: (state, action) => {
+      state.isError = action.payload;
+      state.loading = false;
+    },
 
-    case "FETCH_ALL":
-      return { ...inventory, inventories: action.payload };
+    createProduct: (state, action) => {
+      const item = state.inventory.find(
+        (p) =>
+          p.category === action.payload.category &&
+          p.creator === action.payload.creator
+      );
+      if (item) {
+        item.quantity = action.payload.quantity;
+        item.quantitySold = action.payload.quantitySold;
+        item.outgoingCost = action.payload.outgoingCost;
+      } else {
+        state.inventory.push(action.payload);
+      }
+    },
+    deleteProduct: (state, action) => {
+      state.inventory.splice(
+        state.inventory.findIndex((item) => item._id === action.payload),
+        1
+      );
+    },
+    updateProduct: (state, action) => {
+      state.inventory[
+        state.inventory.findIndex((item) => item._id === action.payload._id)
+      ] = action.payload;
+    },
+  },
+});
 
-    case "CREATE":
-      return {
-        ...inventory,
-        inventories: [...inventory.inventories, action.payload],
-      };
-
-    case "DELETE":
-      return {
-        ...inventory,
-        inventories: inventory.inventories.filter(
-          (t) => t._id !== action.payload
-        ),
-      };
-
-    case "UPDATE":
-      return {
-        ...inventory,
-        inventories: inventory.inventories.map((t) =>
-          t._id === action.payload._id ? action.payload : t
-        ),
-      };
-
-    default:
-      return inventory;
-  }
-};
-
-export default inventory;
+export const {
+  startLoading,
+  endLoading,
+  getProducts,
+  createProduct,
+  showError,
+  deleteProduct,
+  updateProduct,
+} = inventoriesSlice.actions;
+export default inventoriesSlice.reducer;

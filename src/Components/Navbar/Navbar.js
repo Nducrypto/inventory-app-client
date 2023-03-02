@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import { Button, Tooltip } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LogoutPrompt from "./LogoutPrompt";
 
@@ -25,7 +24,6 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 const Navbar = () => {
   const {
     setActiveMenu,
-    handleClick,
     screenSize,
     setScreenSize,
     search,
@@ -34,7 +32,6 @@ const Navbar = () => {
     setPrompt,
   } = useStateContext();
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("profile"));
 
@@ -55,18 +52,18 @@ const Navbar = () => {
   }, [setActiveMenu, screenSize]);
 
   const logout = () => {
-    dispatch({ type: "LOGOUT" });
+    localStorage.clear("profile");
   };
 
   return (
     <div
-      style={{ backgroundColor: "darkblue" }}
+      style={{ backgroundColor: "white" }}
       className="flex justify-between p-2 md:mx-6 relative w-900"
     >
       <NavButton
         title="Menu"
         customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
-        color="white"
+        color="blue"
         icon={<AiOutlineMenu />}
       />
 
@@ -76,11 +73,7 @@ const Navbar = () => {
         {/* ======PROFILE=== */}
         {user?.result && (
           <div className="flex items-center gap-2 cursor-pointer p-1 secondary-dark-bg rounded-lg">
-            {/* <img className="rounded-full w-8 h-8" alt="loading" /> */}
-            <span
-              style={{ color: "white" }}
-              className=" font-bold mr-8 text-14"
-            >
+            <span className=" font-bold mr-8 text-14">
               {user?.result.firstName} {user?.result.lastName}
             </span>
           </div>
@@ -102,10 +95,7 @@ const Navbar = () => {
         )}
 
         {user?.result ? (
-          <div
-            className="flex items-center gap-2 cursor-pointer p-1 secondary-dark-bg rounded-lg"
-            onClick={() => handleClick("userProfile")}
-          >
+          <div className="flex items-center gap-2 cursor-pointer p-1 secondary-dark-bg rounded-lg">
             {!prompt && (
               <Button
                 size="small"

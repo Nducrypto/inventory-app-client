@@ -9,85 +9,36 @@ import {
   Container,
 } from "@mui/material";
 import { useStateContext } from "../../States/Context/ContextProvider";
+import PageFilled from "../PageFill/PageFill";
 import Percentage from "../Percentage/Percentage";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Sidebar = () => {
-  const {
-    inWatchReducedQuan,
-    outWatchReducedQuan,
-    inWatchReducedAmount,
-    outWatchReducedAmount,
+  const { showByCreator, search } = useStateContext();
+  const navigate = useNavigate();
 
-    inShoeReducedQuantity,
-    outShoeReducedQuantity,
-    inShoeReducedAmount,
-    outShoeReducedAmount,
+  const useNdu = () => {
+    return new URLSearchParams(useLocation().search);
+  };
+  const product = useNdu().get("product");
 
-    inClothReducedQuantity,
-    outClothReducedQuantity,
-    inClothReducedAmount,
-    outClothReducedAmount,
+  useEffect(() => {
+    if (search) {
+      navigate(`/?product=${search}`);
+    } else {
+      navigate(`/`);
+    }
+  }, [search, navigate]);
+  const searching = showByCreator.filter(
+    (p) =>
+      p.category.toLowerCase().includes(product) ||
+      p.category.includes(product) ||
+      p.type.toLowerCase().includes(product) ||
+      p.type.includes(product)
+  );
 
-    inDoorReducedQuantity,
-    outDoorReducedQuantity,
-    inDoorReducedAmount,
-    outDoorReducedAmount,
-
-    inBagReducedQuantity,
-    outBagReducedQuantity,
-    inBagReducedAmount,
-    outBagReducedAmount,
-  } = useStateContext();
-
-  const displayData = [
-    {
-      product: "Shoe",
-      quantityInStock: inShoeReducedQuantity,
-      quantitySold: outShoeReducedQuantity,
-      quantityRemaining: inShoeReducedQuantity - outShoeReducedQuantity,
-      totalCostAmount: inShoeReducedAmount,
-      amountSold: outShoeReducedAmount,
-      profit: outShoeReducedAmount - inShoeReducedAmount,
-    },
-    {
-      product: "Watch",
-      quantityInStock: inWatchReducedQuan,
-      quantitySold: outWatchReducedQuan,
-      quantityRemaining: inWatchReducedQuan - outWatchReducedQuan,
-      totalCostAmount: inWatchReducedAmount,
-      amountSold: outWatchReducedAmount,
-      profit: outWatchReducedAmount - inWatchReducedAmount,
-    },
-    {
-      product: "Cloth",
-      quantityInStock: inClothReducedQuantity,
-      quantitySold: outClothReducedQuantity,
-      quantityRemaining: inClothReducedQuantity - outClothReducedQuantity,
-      totalCostAmount: inClothReducedAmount,
-      amountSold: outClothReducedAmount,
-      profit: outClothReducedAmount - inClothReducedAmount,
-    },
-    {
-      product: "Door",
-      quantityInStock: inDoorReducedQuantity,
-      quantitySold: outDoorReducedQuantity,
-      quantityRemaining: inDoorReducedQuantity - outDoorReducedQuantity,
-      totalCostAmount: inDoorReducedAmount,
-      amountSold: outDoorReducedAmount,
-      profit: outDoorReducedAmount - inDoorReducedAmount,
-    },
-    {
-      product: "Bag",
-      quantityInStock: inBagReducedQuantity,
-      quantitySold: outBagReducedQuantity,
-      quantityRemaining: inBagReducedQuantity - outBagReducedQuantity,
-      totalCostAmount: inBagReducedAmount,
-      amountSold: outBagReducedAmount,
-      profit: outBagReducedAmount - inBagReducedAmount,
-      // subTotal: inBagReducedAmount - outBagReducedAmount,
-    },
-  ];
-
+  const changer = search ? searching : showByCreator;
   return (
     <Container
       sx={{
@@ -105,19 +56,19 @@ const Sidebar = () => {
                 Products
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Quantity InStock
+                Bought
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Quantity Sold
+                Sold
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Quan Remaining
+                Instock
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
                 Total Cost&nbsp;(&#8358;)
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
-                Amount Sold&nbsp;(&#8358;)
+                Sold&nbsp;(&#8358;)
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
                 Profit&nbsp;(&#8358;)
@@ -126,8 +77,8 @@ const Sidebar = () => {
           </TableHead>
 
           <TableBody>
-            {displayData?.map((row, i) => (
-              <TableRow key={i}>
+            {changer?.map((row) => (
+              <TableRow key={row._id}>
                 <div
                   style={{
                     position: "fixed",
@@ -135,33 +86,42 @@ const Sidebar = () => {
                     zIndex: "500",
                   }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.product}
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    sx={{
+                      display: "inline-block",
+                      ":first-letter": { textTransform: "uppercase" },
+                    }}
+                  >
+                    {row.category}
                   </TableCell>
                 </div>
                 <TableCell align="right" sx={{ color: "blue" }}>
-                  {row.quantityInStock}
+                  {row.quantity + row.quantitySold}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "red" }}>
                   {row.quantitySold}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "green" }}>
-                  {row.quantityRemaining}
+                  {row.quantity}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "blue" }}>
-                  {row.totalCostAmount}
+                  {row.totalCost}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "red" }}>
-                  {row.amountSold}
+                  {row.outgoingCost}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "green" }}>
-                  {row.profit}
+                  {!row.outgoingCost ? 0 : row.outgoingCost - row.totalCost}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <PageFilled />
     </Container>
   );
 };

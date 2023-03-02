@@ -1,28 +1,38 @@
 import React from "react";
-import useFetch from "../../Hooks/useFetch";
+// import useFetch from "../../Hooks/useFetch";
 import { ArrowUpward, ArrowDownward, ArrowDropUp } from "@mui/icons-material";
+import { useStateContext } from "../../States/Context/ContextProvider";
 
 import "./percentage.css";
 const Percentage = () => {
-  const { data } = useFetch("/page/stats");
-  const user = JSON.parse(localStorage.getItem("profile"));
-  const creator = user?.result._id;
+  // const { data } = useFetch(`/page/stats`);
+  const { showByCreator } = useStateContext();
 
-  const showByCreator = data.filter((p) => p.creator === creator);
-  const incoming = showByCreator.filter((p) => p.type === "Incoming");
-  const outgoing = showByCreator.filter((p) => p.type === "Outgoing");
-  const totalIncome = incoming.reduce((x, y) => x + y.amount, 0);
-  const totalOutgoing = outgoing.reduce((x, y) => x + y.amount, 0);
-  const total = totalOutgoing - totalIncome;
-  const profitPercent = (total / totalIncome) * 100;
+  // const user = JSON.parse(localStorage.getItem("profile"));
+  // const creator = user?.result._id;
+
+  const totalCost = showByCreator.reduce(
+    (x, y) => Number(x) + Number(y.totalCost),
+    0
+  );
+  const OutgoingCost = showByCreator.reduce(
+    (x, y) => Number(x) + Number(y.outgoingCost),
+    0
+  );
+  const profitPercent = OutgoingCost - (totalCost / totalCost) * 100;
+
+  const quantitySold = showByCreator.reduce(
+    (x, y) => Number(x) + Number(y.quantitySold),
+    0
+  );
+
   return (
     <div className="featured">
       <div className="featuredItemRevenue">
         <span className="featuredHeader">Revenue</span>
         <div className="featuredMoneyContainer">
-          {/* %{Math.ceil(Intl.NumberFormat().format(total))}% */}%
-          {Intl.NumberFormat().format(!profitPercent ? 0 : profitPercent)}
-          {!profitPercent === 0 ? (
+          %{Intl.NumberFormat().format(!OutgoingCost ? 0 : profitPercent)}
+          {!OutgoingCost || profitPercent === 0 ? (
             <ArrowDropUp />
           ) : profitPercent < 0 ? (
             <ArrowDownward fontSize="small" sx={{ color: "red" }} />
@@ -32,15 +42,15 @@ const Percentage = () => {
         </div>
       </div>
       <div className="featuredItemCost">
-        <span className="featuredHeader">Cost</span>
+        <span className="featuredHeader">Items</span>
         <div className="featuredMoneyContainer">
-          <span>&#8358; {Intl.NumberFormat().format(totalIncome)}</span>
+          <span>{showByCreator.length}</span>
         </div>
       </div>
       <div className="featuredItemSales">
-        <span className="featuredHeader">Sold</span>
+        <span className="featuredHeader">Quantity Sold</span>
         <div className="featuredMoneyContainer">
-          <span>&#8358;{Intl.NumberFormat().format(totalOutgoing)}</span>
+          <span>{quantitySold}</span>
         </div>
       </div>
     </div>

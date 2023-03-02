@@ -1,28 +1,39 @@
 import * as api from "../Api/index";
-
+import {
+  startLoading,
+  endLoading,
+  getProducts,
+  createProduct,
+  showError,
+  deleteProduct,
+  updateProduct,
+} from "../Reducers/inventorys";
 export const getTransactions = () => async (dispatch) => {
   try {
-    dispatch({ type: "START_LOADING" });
+    dispatch(startLoading());
 
     const { data } = await api.fetchInventories();
-    dispatch({ type: "FETCH_ALL", payload: data });
-    dispatch({ type: "END_LOADING" });
+    dispatch(getProducts(data));
+    dispatch(endLoading());
   } catch (error) {
-    console.log(error);
+    dispatch(showError());
   }
 };
 
 export const createTransaction =
-  (transaction, setSnackBarOpen) => async (dispatch) => {
+  (transaction, setSnackBarOpen, setOpenBackDrop) => async (dispatch) => {
     try {
-      dispatch({ type: "START_LOADING" });
+      dispatch(startLoading());
 
       const { data } = await api.createTransaction(transaction);
-      dispatch({ type: "END_LOADING" });
+      dispatch(endLoading());
 
-      dispatch({ type: "CREATE", payload: data });
+      dispatch(createProduct(data));
+      setOpenBackDrop(false);
       setSnackBarOpen("create");
     } catch (error) {
+      dispatch(showError());
+
       console.log(error);
     }
   };
@@ -30,9 +41,10 @@ export const createTransaction =
 export const deleteTransaction = (id, setSnackBarOpen) => async (dispatch) => {
   try {
     await api.deleteTransaction(id);
-    dispatch({ type: "DELETE", payload: id });
+    dispatch(deleteProduct(id));
     setSnackBarOpen("delete");
   } catch (error) {
+    dispatch(showError());
     console.log(error);
   }
 };
@@ -40,8 +52,9 @@ export const deleteTransaction = (id, setSnackBarOpen) => async (dispatch) => {
 export const updateTransaction = (id, transaction) => async (dispatch) => {
   try {
     const { data } = await api.updateTransaction(id, transaction);
-    dispatch({ type: "UPDATE", payload: data });
+    dispatch(updateProduct(data));
   } catch (error) {
+    dispatch(showError());
     console.log(error);
   }
 };
