@@ -11,8 +11,8 @@ export const links = [
   },
 
   {
-    name: "AddProduct",
-    url: "addproduct",
+    name: "Products",
+    url: "productshistory",
 
     icon: <FiShoppingBag />,
   },

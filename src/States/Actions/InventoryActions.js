@@ -5,15 +5,24 @@ import {
   getProducts,
   createProduct,
   showError,
-  deleteProduct,
+  deleteHistory,
+  deleteInventory,
   updateProduct,
 } from "../Reducers/inventorys";
-export const getTransactions = () => async (dispatch) => {
+export const getTransactions = (page, creator) => async (dispatch) => {
   try {
     dispatch(startLoading());
 
-    const { data } = await api.fetchInventories();
-    dispatch(getProducts(data));
+    // const { data } = await api.fetchInventories();
+    const { data } = await api.fetchInventories(page, creator);
+    console.log(data);
+    dispatch(
+      getProducts({
+        transactions: data.transactions,
+        currentpage: data.currentpage,
+        numberOfPages: data.numberOfPages,
+      })
+    );
     dispatch(endLoading());
   } catch (error) {
     dispatch(showError());
@@ -38,10 +47,20 @@ export const createTransaction =
     }
   };
 
-export const deleteTransaction = (id, setSnackBarOpen) => async (dispatch) => {
+export const deleteAll = (data, setSnackBarOpen) => async (dispatch) => {
   try {
-    await api.deleteTransaction(id);
-    dispatch(deleteProduct(id));
+    await api.deleteAllTransaction(data);
+    dispatch(deleteInventory(data));
+    setSnackBarOpen("delete");
+  } catch (error) {
+    dispatch(showError());
+    console.log(error);
+  }
+};
+export const deleteOne = (data, setSnackBarOpen) => async (dispatch) => {
+  try {
+    await api.deleteOneHistory(data);
+    dispatch(deleteHistory(data));
     setSnackBarOpen("delete");
   } catch (error) {
     dispatch(showError());

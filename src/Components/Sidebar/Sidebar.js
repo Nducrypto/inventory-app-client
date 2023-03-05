@@ -21,8 +21,8 @@ const Sidebar = () => {
     if ((location.pathname === "/") & (name === "Home")) {
       return "orange";
     } else if (
-      (location.pathname === "/addproduct") &
-      (name === "AddProduct")
+      (location.pathname === "/productshistory") &
+      (name === "Products")
     ) {
       return "orange";
     } else if ((location.pathname === "/profile") & (name === "Profile")) {

@@ -6,6 +6,9 @@ const inventoriesSlice = createSlice({
     inventory: [],
     loading: false,
     isError: false,
+
+    numberOfPages: 0,
+    currentPage: {},
   },
   reducers: {
     startLoading: (state) => {
@@ -16,8 +19,12 @@ const inventoriesSlice = createSlice({
       state.loading = false;
     },
     getProducts: (state, action) => {
-      state.inventory = action.payload;
+      console.log(action.payload.numberOfPages);
+      state.inventory = action.payload.transactions;
+      state.currentPage = action.payload.currentPage;
+      state.numberOfPages = action.payload.numberOfPages;
     },
+
     showError: (state, action) => {
       state.isError = action.payload;
       state.loading = false;
@@ -30,16 +37,25 @@ const inventoriesSlice = createSlice({
           p.creator === action.payload.creator
       );
       if (item) {
-        item.quantity = action.payload.quantity;
+        item.quantityIn = action.payload.quantityIn;
         item.quantitySold = action.payload.quantitySold;
+        item.quantityRemaining = action.payload.quantityRemaining;
         item.outgoingCost = action.payload.outgoingCost;
+        item.totalCost = action.payload.totalCost;
+        item.outgoing = action.payload.outgoingCost;
       } else {
         state.inventory.push(action.payload);
       }
     },
-    deleteProduct: (state, action) => {
+    deleteInventory: (state, action) => {
       state.inventory.splice(
-        state.inventory.findIndex((item) => item._id === action.payload),
+        state.inventory.findIndex((item) => item._id === action.payload._id),
+        1
+      );
+    },
+    deleteHistory: (state, action) => {
+      state.history.splice(
+        state.history.findIndex((item) => item._id === action.payload._id),
         1
       );
     },
@@ -57,7 +73,8 @@ export const {
   getProducts,
   createProduct,
   showError,
-  deleteProduct,
+  deleteInventory,
+  deleteHistory,
   updateProduct,
 } = inventoriesSlice.actions;
 export default inventoriesSlice.reducer;

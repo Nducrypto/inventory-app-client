@@ -11,8 +11,12 @@ const PageFilled = () => {
 
   return (
     <div style={{ marginTop: "2rem", textAlign: "center" }}>
-      <Button size="small" onClick={handleToggle} variant="contained">
-        add transaction
+      <Button
+        size="small"
+        onClick={handleToggle}
+        style={{ backgroundColor: "red", color: "white" }}
+      >
+        create item
       </Button>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

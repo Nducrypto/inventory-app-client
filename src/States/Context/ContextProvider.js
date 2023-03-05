@@ -16,17 +16,10 @@ export const ContextProvider = ({ children }) => {
 
   const { inventory, loading } = useSelector((state) => state.inventory);
 
-  const user = JSON.parse(localStorage.getItem("profile"));
-  const creator = user?.result._id;
-
-  const showByCreator = inventory.filter((p) =>
-    creator ? p.creator === creator : null
-  );
-
   return (
     <stateContext.Provider
       value={{
-        showByCreator,
+        inventory,
         loading,
         activeMenu,
         setActiveMenu,

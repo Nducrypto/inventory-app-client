@@ -1,27 +1,21 @@
 import React from "react";
-// import useFetch from "../../Hooks/useFetch";
+import useFetch from "../../Hooks/useFetch";
 import { ArrowUpward, ArrowDownward, ArrowDropUp } from "@mui/icons-material";
-import { useStateContext } from "../../States/Context/ContextProvider";
 
 import "./percentage.css";
 const Percentage = () => {
-  // const { data } = useFetch(`/page/stats`);
-  const { showByCreator } = useStateContext();
+  const user = JSON.parse(localStorage.getItem("profile"));
+  const creator = user?.result._id;
+  const { data } = useFetch(`/page/percdetails?creator=${creator}`);
 
-  // const user = JSON.parse(localStorage.getItem("profile"));
-  // const creator = user?.result._id;
-
-  const totalCost = showByCreator.reduce(
-    (x, y) => Number(x) + Number(y.totalCost),
-    0
-  );
-  const OutgoingCost = showByCreator.reduce(
+  const totalCost = data.reduce((x, y) => Number(x) + Number(y.totalCost), 0);
+  const OutgoingCost = data.reduce(
     (x, y) => Number(x) + Number(y.outgoingCost),
     0
   );
   const profitPercent = OutgoingCost - (totalCost / totalCost) * 100;
 
-  const quantitySold = showByCreator.reduce(
+  const quantitySold = data.reduce(
     (x, y) => Number(x) + Number(y.quantitySold),
     0
   );
@@ -44,7 +38,7 @@ const Percentage = () => {
       <div className="featuredItemCost">
         <span className="featuredHeader">Items</span>
         <div className="featuredMoneyContainer">
-          <span>{showByCreator.length}</span>
+          <span>{data.length}</span>
         </div>
       </div>
       <div className="featuredItemSales">

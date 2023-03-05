@@ -7,16 +7,16 @@ const API = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 
 const useFetch = (url) => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setIsLoading(true);
       try {
         const { data } = await API.get(url);
         setData(data);
-        setLoading(false);
+        setIsLoading(false);
       } catch (err) {
         setError(err);
       }
@@ -24,17 +24,7 @@ const useFetch = (url) => {
     fetchData();
   }, [url]);
 
-  const reFetch = async () => {
-    setLoading(true);
-    try {
-      const { data } = await API.get(url);
-      setData(data);
-      setLoading(false);
-    } catch (err) {
-      setError(err);
-    }
-  };
-  return { data, loading, error, reFetch, setData, API };
+  return { data, isLoading, error, setData, API };
 };
 
 export default useFetch;

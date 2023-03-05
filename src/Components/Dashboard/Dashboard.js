@@ -11,34 +11,32 @@ import {
 import { useStateContext } from "../../States/Context/ContextProvider";
 import PageFilled from "../PageFill/PageFill";
 import Percentage from "../Percentage/Percentage";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { Delete } from "@mui/icons-material";
+import { deleteAll } from "../../States/Actions/InventoryActions";
+import { useDispatch } from "react-redux";
+import Paginate from "../Pagination/paginate";
 
 const Sidebar = () => {
-  const { showByCreator, search } = useStateContext();
-  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  const { inventory, search, setSnackBarOpen } = useStateContext();
+  const dispatch = useDispatch();
 
   const useNdu = () => {
     return new URLSearchParams(useLocation().search);
   };
-  const product = useNdu().get("product");
+  const page = useNdu().get("page") || 1;
 
-  useEffect(() => {
-    if (search) {
-      navigate(`/?product=${search}`);
-    } else {
-      navigate(`/`);
-    }
-  }, [search, navigate]);
-  const searching = showByCreator.filter(
+  const searching = inventory.filter(
     (p) =>
-      p.category.toLowerCase().includes(product) ||
-      p.category.includes(product) ||
-      p.type.toLowerCase().includes(product) ||
-      p.type.includes(product)
+      p.category.toLowerCase().includes(search) ||
+      p.category.includes(search) ||
+      p.type.toLowerCase().includes(search) ||
+      p.type.includes(search)
   );
 
-  const changer = search ? searching : showByCreator;
+  const changer = search ? searching : inventory;
   return (
     <Container
       sx={{
@@ -49,7 +47,6 @@ const Sidebar = () => {
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <caption>Track Your Transactions From Anywhere</caption>
           <TableHead>
             <TableRow sx={{ backgroundColor: "green" }}>
               <TableCell sx={{ color: "white", fontSize: "1rem" }}>
@@ -72,6 +69,9 @@ const Sidebar = () => {
               </TableCell>
               <TableCell align="right" sx={{ color: "white" }}>
                 Profit&nbsp;(&#8358;)
+              </TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>
+                Delete
               </TableCell>
             </TableRow>
           </TableHead>
@@ -98,13 +98,15 @@ const Sidebar = () => {
                   </TableCell>
                 </div>
                 <TableCell align="right" sx={{ color: "blue" }}>
-                  {row.quantity + row.quantitySold}
+                  {row.quantityIn}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "red" }}>
                   {row.quantitySold}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "green" }}>
-                  {row.quantity}
+                  {!row.quantityRemaining === 0
+                    ? row.quantityRemaining
+                    : row.quantityIn}
                 </TableCell>
                 <TableCell align="right" sx={{ color: "blue" }}>
                   {row.totalCost}
@@ -115,13 +117,18 @@ const Sidebar = () => {
                 <TableCell align="right" sx={{ color: "green" }}>
                   {!row.outgoingCost ? 0 : row.outgoingCost - row.totalCost}
                 </TableCell>
+                <TableCell align="right" sx={{ color: "green" }}>
+                  <Delete
+                    onClick={() => dispatch(deleteAll(row, setSnackBarOpen))}
+                  />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
-      <PageFilled />
+      <Paginate page={page} />
+      {user?.result && <PageFilled />}
     </Container>
   );
 };

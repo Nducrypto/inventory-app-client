@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { getTransactions } from "./States/Actions/InventoryActions";
-import Details from "./Components/Details/Details";
-import Products from "./Components/Products/Products";
+import History from "./Components/History/History";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import "./App.css";
 import Auth from "./Components/Auth/Auth";
@@ -36,7 +34,6 @@ function App() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getTransactions());
     JSON.parse(localStorage.getItem("profile"));
   }, [dispatch, location]);
 
@@ -79,21 +76,14 @@ function App() {
               }
             />
             <Route
-              path="/addproduct"
+              path="/productshistory"
               element={
                 <ProtectedRoute>
-                  <Products />
+                  <History />
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/:category"
-              element={
-                <ProtectedRoute>
-                  <Details />
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/auth"
               element={

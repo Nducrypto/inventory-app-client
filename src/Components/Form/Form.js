@@ -23,7 +23,6 @@ const initialState = {
   date: FormatDate(new Date()),
   quantity: "",
   price: "",
-  amount: "",
 };
 
 const Form = () => {
@@ -34,7 +33,7 @@ const Form = () => {
     setSnackBarOpen,
     snackBarOpen,
     loading,
-    showByCreator,
+    inventory,
     setError,
     error,
     openBackDrop,
@@ -44,7 +43,7 @@ const Form = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
 
-  const clickEdith = showByCreator.find((p) =>
+  const clickEdith = inventory.find((p) =>
     currentId ? p._id === currentId : null
   );
   const totalCost = form.price * form.quantity;
@@ -56,14 +55,14 @@ const Form = () => {
 
   // ===== HANDLESUBMIT ====
   const handleSubmit = () => {
-    const findMe = showByCreator?.find(
-      (p) =>
-        p.category.toLowerCase().includes(form.category) ||
-        p.category.toUpperCase().includes(form.category) ||
-        p.category.includes(form.category)
-    );
-
-    if (findMe && findMe.quantity < form.quantity && form.type === "Outgoing") {
+    const findMe = inventory?.find((p) => p.category === form.category);
+    console.log(findMe);
+    if (
+      findMe &&
+      findMe.quantityRemaining &&
+      findMe.quantityRemaining < form.quantity &&
+      form.type === "Outgoing"
+    ) {
       setError(true);
     } else if (!findMe && form.type === "Outgoing") {
       setError(true);
@@ -133,9 +132,12 @@ const Form = () => {
         sx={{
           marginTop: ".5rem",
         }}
+        label="Category"
         fullWidth
         value={form.category}
-        onChange={(e) => setForm({ ...form, category: e.target.value })}
+        onChange={(e) =>
+          setForm({ ...form, category: e.target.value.toUpperCase() })
+        }
       />
 
       <TextField
