@@ -51,6 +51,7 @@ const Sidebar = () => {
         }
       />
       {/* <Percentage /> */}
+      {user?.result && <PageFilled />}
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
@@ -119,7 +120,7 @@ const Sidebar = () => {
                       {row.quantitySold}
                     </TableCell>
                     <TableCell align="right" sx={{ color: "green" }}>
-                      {row.quantityRemaining < 1
+                      {row.quantityRemaining === 0 && !row.quantitySold
                         ? row.quantityIn
                         : row.quantityRemaining}
                     </TableCell>
@@ -146,7 +147,7 @@ const Sidebar = () => {
         </Table>
       </TableContainer>
       <Paginate page={page} />
-      {user?.result && <PageFilled />}
+      {/* {user?.result && <PageFilled />} */}
     </Container>
   );
 };

@@ -61,7 +61,7 @@ const Form = () => {
     if (
       findMe &&
       findMe.quantityRemaining &&
-      findMe.quantityRemaining < form.quantity &&
+      Number(form.quantity) > Number(findMe?.quantityRemaining) &&
       form.type === "Outgoing"
     ) {
       setError(true);
@@ -124,7 +124,7 @@ const Form = () => {
           value={form.type}
           onChange={(e) => {
             setForm({ ...form, type: e.target.value });
-            setError(false);
+            // setError(false);
           }}
         >
           <MenuItem value="Incoming">Incoming</MenuItem>
@@ -141,7 +141,7 @@ const Form = () => {
         value={form.category}
         onChange={(e) => {
           setForm({ ...form, category: e.target.value.toUpperCase() });
-          setError(false);
+          // setError(false);
         }}
       />
 
