@@ -7,20 +7,22 @@ import {
   TableBody,
   Table,
   Container,
+  CircularProgress,
 } from "@mui/material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import PageFilled from "../PageFill/PageFill";
-import Percentage from "../Percentage/Percentage";
 import { useLocation } from "react-router-dom";
 import { Delete } from "@mui/icons-material";
 import { deleteAll } from "../../States/Actions/InventoryActions";
 import { useDispatch } from "react-redux";
 import Paginate from "../Pagination/paginate";
+import CustomizedSnackbar from "../SnackBar/SnackBar";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  const { inventory, search, setSnackBarOpen } = useStateContext();
+  const { inventory, loading, search, setSnackBarOpen, snackBarOpen } =
+    useStateContext();
   const dispatch = useDispatch();
 
   const useNdu = () => {
@@ -38,12 +40,17 @@ const Sidebar = () => {
 
   const changer = search ? searching : inventory;
   return (
-    <Container
-      sx={{
-        marginTop: { lg: "1.5rem", md: "1.5rem", xs: "5.5rem", sm: "3rem" },
-      }}
-    >
-      <Percentage />
+    <Container>
+      <CustomizedSnackbar
+        message={
+          snackBarOpen === "create"
+            ? "Item Added Successfully"
+            : snackBarOpen === "delete"
+            ? "Deleted Successfully"
+            : false
+        }
+      />
+      {/* <Percentage /> */}
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
@@ -77,57 +84,66 @@ const Sidebar = () => {
           </TableHead>
 
           <TableBody>
-            {changer?.map((row) => (
-              <TableRow key={row._id}>
-                <div
-                  style={{
-                    position: "fixed",
-                    backgroundColor: "white",
-                    zIndex: "500",
-                  }}
-                >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    sx={{
-                      display: "inline-block",
-                      ":first-letter": { textTransform: "uppercase" },
-                    }}
-                  >
-                    {row.category}
-                  </TableCell>
-                </div>
-                <TableCell align="right" sx={{ color: "blue" }}>
-                  {row.quantityIn}
-                </TableCell>
-                <TableCell align="right" sx={{ color: "red" }}>
-                  {row.quantitySold}
-                </TableCell>
-                <TableCell align="right" sx={{ color: "green" }}>
-                  {!row.quantityRemaining === 0
-                    ? row.quantityRemaining
-                    : row.quantityIn}
-                </TableCell>
-                <TableCell align="right" sx={{ color: "blue" }}>
-                  {row.totalCost}
-                </TableCell>
-                <TableCell align="right" sx={{ color: "red" }}>
-                  {row.outgoingCost}
-                </TableCell>
-                <TableCell align="right" sx={{ color: "green" }}>
-                  {!row.outgoingCost ? 0 : row.outgoingCost - row.totalCost}
-                </TableCell>
-                <TableCell align="right" sx={{ color: "green" }}>
-                  <Delete
-                    onClick={() => dispatch(deleteAll(row, setSnackBarOpen))}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              changer
+                ?.slice()
+                .sort((a, b) => (a._id > b._id ? -1 : +1))
+                .map((row) => (
+                  <TableRow key={row._id}>
+                    <div
+                      style={{
+                        position: "fixed",
+                        backgroundColor: "white",
+                        zIndex: "500",
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          display: "inline-block",
+                          ":first-letter": { textTransform: "uppercase" },
+                        }}
+                      >
+                        {row.category}
+                      </TableCell>
+                    </div>
+                    <TableCell align="right" sx={{ color: "blue" }}>
+                      {row.quantityIn}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "red" }}>
+                      {row.quantitySold}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "green" }}>
+                      {row.quantityRemaining < 1
+                        ? row.quantityIn
+                        : row.quantityRemaining}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "blue" }}>
+                      {row.totalCost}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "red" }}>
+                      {row.outgoingCost}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "green" }}>
+                      {!row.outgoingCost ? 0 : row.outgoingCost - row.totalCost}
+                    </TableCell>
+                    <TableCell align="right" sx={{ color: "green" }}>
+                      <Delete
+                        onClick={() =>
+                          dispatch(deleteAll(row, setSnackBarOpen))
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-      <Paginate page={page} />
+      {!loading && <Paginate page={page} />}
       {user?.result && <PageFilled />}
     </Container>
   );

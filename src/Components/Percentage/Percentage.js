@@ -3,6 +3,7 @@ import useFetch from "../../Hooks/useFetch";
 import { ArrowUpward, ArrowDownward, ArrowDropUp } from "@mui/icons-material";
 
 import "./percentage.css";
+
 const Percentage = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
@@ -22,6 +23,9 @@ const Percentage = () => {
 
   return (
     <div className="featured">
+      {/* sx={{
+        marginTop: { lg: "1.5rem", md: "1.5rem", xs: "5.5rem", sm: "3rem" },
+      }} */}
       <div className="featuredItemRevenue">
         <span className="featuredHeader">Revenue</span>
         <div className="featuredMoneyContainer">

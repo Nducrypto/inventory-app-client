@@ -2,6 +2,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    margin-top: 1.5rem;
   }
   
  
@@ -66,6 +67,11 @@
   
 
   @media (max-width: 600px) {
+    .featured {
+    
+      margin-top: 5rem;
+    }
+    
     
     .featuredMoneyContainer{
         font-size: 11px;

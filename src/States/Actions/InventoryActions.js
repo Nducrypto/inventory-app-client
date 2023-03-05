@@ -13,7 +13,6 @@ export const getTransactions = (page, creator) => async (dispatch) => {
   try {
     dispatch(startLoading());
 
-    // const { data } = await api.fetchInventories();
     const { data } = await api.fetchInventories(page, creator);
     console.log(data);
     dispatch(

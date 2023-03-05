@@ -6,10 +6,10 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import "./App.css";
 import Auth from "./Components/Auth/Auth";
 
-import Dashboard from "./Components/Dashboard/Dashboard";
 import { useStateContext } from "./States/Context/ContextProvider";
 import Navbar from "./Components/Navbar/Navbar";
 import Profile from "./Components/Profile/Profile";
+import Home from "./Components/Home/Home";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -58,7 +58,7 @@ function App() {
         </div>
         <div>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Home />} />
             <Route
               path="/profile"
               element={
@@ -67,14 +67,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/home"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/productshistory"
               element={

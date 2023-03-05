@@ -12,7 +12,6 @@ const Paginate = ({ page }) => {
 
   const { numberOfPages } = useSelector((state) => state.inventory);
   const dispatch = useDispatch();
-  console.log(numberOfPages);
 
   useEffect(() => {
     if (page) {
