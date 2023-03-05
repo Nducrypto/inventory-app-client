@@ -86,6 +86,8 @@ const Sidebar = () => {
           <TableBody>
             {loading ? (
               <CircularProgress />
+            ) : !loading && !changer.length ? (
+              <h1>No Item InStock</h1>
             ) : (
               changer
                 ?.slice()
@@ -143,7 +145,7 @@ const Sidebar = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {!loading && <Paginate page={page} />}
+      <Paginate page={page} />
       {user?.result && <PageFilled />}
     </Container>
   );

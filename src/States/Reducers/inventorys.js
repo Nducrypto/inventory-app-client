@@ -6,9 +6,9 @@ const inventoriesSlice = createSlice({
     inventory: [],
     loading: false,
     isError: false,
-
     numberOfPages: 0,
-    currentPage: {},
+    currentPage: 0,
+    getData: [],
   },
   reducers: {
     startLoading: (state) => {
@@ -23,6 +23,9 @@ const inventoriesSlice = createSlice({
       state.inventory = action.payload.transactions;
       state.currentPage = action.payload.currentPage;
       state.numberOfPages = action.payload.numberOfPages;
+    },
+    getItemsPerc: (state, action) => {
+      state.getData = action.payload;
     },
 
     showError: (state, action) => {
@@ -76,5 +79,6 @@ export const {
   deleteInventory,
   deleteHistory,
   updateProduct,
+  getItemsPerc,
 } = inventoriesSlice.actions;
 export default inventoriesSlice.reducer;

@@ -8,13 +8,15 @@ import {
   deleteHistory,
   deleteInventory,
   updateProduct,
+  getItemsPerc,
 } from "../Reducers/inventorys";
+
 export const getTransactions = (page, creator) => async (dispatch) => {
   try {
     dispatch(startLoading());
 
     const { data } = await api.fetchInventories(page, creator);
-    console.log(data);
+
     dispatch(
       getProducts({
         transactions: data.transactions,
@@ -71,6 +73,19 @@ export const updateTransaction = (id, transaction) => async (dispatch) => {
   try {
     const { data } = await api.updateTransaction(id, transaction);
     dispatch(updateProduct(data));
+  } catch (error) {
+    dispatch(showError());
+    console.log(error);
+  }
+};
+export const getProductsPerc = (creator) => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+
+    const { data } = await api.fetchproductsPerc(creator);
+    dispatch(endLoading());
+
+    dispatch(getItemsPerc(data));
   } catch (error) {
     dispatch(showError());
     console.log(error);

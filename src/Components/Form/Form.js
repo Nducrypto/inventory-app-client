@@ -12,6 +12,7 @@ import {
   createTransaction,
   updateTransaction,
 } from "../../States/Actions/InventoryActions";
+
 import { useStateContext } from "../../States/Context/ContextProvider";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
 import FormatDate from "../../Utils/FormatDate";
@@ -86,8 +87,8 @@ const Form = () => {
           setOpenBackDrop
         )
       );
+      setForm(initialState);
     }
-    setForm(initialState);
     setCurrentId();
   };
 
@@ -121,7 +122,10 @@ const Form = () => {
         <Select
           fullWidth
           value={form.type}
-          onChange={(e) => setForm({ ...form, type: e.target.value })}
+          onChange={(e) => {
+            setForm({ ...form, type: e.target.value });
+            setError(false);
+          }}
         >
           <MenuItem value="Incoming">Incoming</MenuItem>
           <MenuItem value="Outgoing">Outgoing</MenuItem>
@@ -135,9 +139,10 @@ const Form = () => {
         label="Category"
         fullWidth
         value={form.category}
-        onChange={(e) =>
-          setForm({ ...form, category: e.target.value.toUpperCase() })
-        }
+        onChange={(e) => {
+          setForm({ ...form, category: e.target.value.toUpperCase() });
+          setError(false);
+        }}
       />
 
       <TextField

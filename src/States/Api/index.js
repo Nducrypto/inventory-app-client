@@ -5,6 +5,8 @@ const API = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 
 export const fetchInventories = (page, creator) =>
   API.get(`/page?page=${page}&creator=${creator}`);
+export const fetchproductsPerc = (creator) =>
+  API.get(`page/percdetails?creator=${creator}`);
 
 export const createTransaction = (newTransaction) =>
   API.post("/page", newTransaction);

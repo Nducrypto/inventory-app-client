@@ -1,22 +1,34 @@
-import React from "react";
-import useFetch from "../../Hooks/useFetch";
+import React, { useEffect } from "react";
+
 import { ArrowUpward, ArrowDownward, ArrowDropUp } from "@mui/icons-material";
+import { useStateContext } from "../../States/Context/ContextProvider";
+import { getProductsPerc } from "../../States/Actions/InventoryActions";
 
 import "./percentage.css";
+import { useDispatch } from "react-redux";
 
 const Percentage = () => {
+  const dispatch = useDispatch();
+
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
-  const { data } = useFetch(`/page/percdetails?creator=${creator}`);
+  const { getData } = useStateContext();
 
-  const totalCost = data.reduce((x, y) => Number(x) + Number(y.totalCost), 0);
-  const OutgoingCost = data.reduce(
+  useEffect(() => {
+    dispatch(getProductsPerc(creator));
+  }, [dispatch, creator]);
+
+  const totalCost = getData.reduce(
+    (x, y) => Number(x) + Number(y.totalCost),
+    0
+  );
+  const OutgoingCost = getData.reduce(
     (x, y) => Number(x) + Number(y.outgoingCost),
     0
   );
   const profitPercent = OutgoingCost - (totalCost / totalCost) * 100;
 
-  const quantitySold = data.reduce(
+  const quantitySold = getData.reduce(
     (x, y) => Number(x) + Number(y.quantitySold),
     0
   );
@@ -42,7 +54,7 @@ const Percentage = () => {
       <div className="featuredItemCost">
         <span className="featuredHeader">Items</span>
         <div className="featuredMoneyContainer">
-          <span>{data.length}</span>
+          <span>{getData.length}</span>
         </div>
       </div>
       <div className="featuredItemSales">
