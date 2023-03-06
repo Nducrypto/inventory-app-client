@@ -10,6 +10,7 @@ import { useStateContext } from "./States/Context/ContextProvider";
 import Navbar from "./Components/Navbar/Navbar";
 import Profile from "./Components/Profile/Profile";
 import Home from "./Components/Home/Home";
+import { getTransactions } from "./States/Actions/InventoryActions";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -31,11 +32,13 @@ function App() {
   const location = useLocation();
 
   const user = JSON.parse(localStorage.getItem("profile"));
+  const creator = user?.result._id;
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(getTransactions(creator));
     JSON.parse(localStorage.getItem("profile"));
-  }, [dispatch, location]);
+  }, [dispatch, location, creator]);
 
   return (
     <div className="flex relative ">

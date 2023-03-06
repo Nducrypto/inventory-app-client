@@ -141,7 +141,7 @@ const Form = () => {
         value={form.category}
         onChange={(e) => {
           setForm({ ...form, category: e.target.value.toUpperCase() });
-          // setError(false);
+          setError(false);
         }}
       />
 
@@ -176,7 +176,10 @@ const Form = () => {
         type="number"
         fullWidth
         value={form.quantity}
-        onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+        onChange={(e) => {
+          setError(false);
+          setForm({ ...form, quantity: e.target.value });
+        }}
       />
       <div>
         <Button

@@ -14,7 +14,7 @@ export const ContextProvider = ({ children }) => {
   const [error, setError] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
 
-  const { inventory, loading, getData } = useSelector(
+  const { inventory, loading, history } = useSelector(
     (state) => state.inventory
   );
 
@@ -22,7 +22,7 @@ export const ContextProvider = ({ children }) => {
     <stateContext.Provider
       value={{
         inventory,
-        getData,
+        history,
         loading,
         activeMenu,
         setActiveMenu,

@@ -3,10 +3,8 @@ import axios from "axios";
 const API = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 // const API = axios.create({ baseURL: "http://localhost:5000/api" });
 
-export const fetchInventories = (page, creator) =>
-  API.get(`/page?page=${page}&creator=${creator}`);
-export const fetchproductsPerc = (creator) =>
-  API.get(`page/percdetails?creator=${creator}`);
+export const fetchInventories = (creator) =>
+  API.get(`/page?creator=${creator}`);
 
 export const createTransaction = (newTransaction) =>
   API.post("/page", newTransaction);

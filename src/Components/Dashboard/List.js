@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteOne } from "../../States/Actions/InventoryActions";
 import {
@@ -14,21 +13,16 @@ import {
 } from "@mui/material";
 import { Delete, MoneyOff } from "@mui/icons-material";
 import { useStateContext } from "../../States/Context/ContextProvider";
-import useFetch from "../../Hooks/useFetch";
+
 import moment from "moment";
 
 const List = () => {
-  const user = JSON.parse(localStorage.getItem("profile"));
-  const creator = user?.result._id;
-
   const dispatch = useDispatch();
-  const { search, setSnackBarOpen } = useStateContext();
-  const { data, isLoading } = useFetch(`/page/history?creator=${creator}`);
-  console.log(data);
+  const { search, setSnackBarOpen, history, loading } = useStateContext();
 
-  const searching = data.filter((p) => p.category.includes(search));
+  const searching = history.filter((p) => p.category.includes(search));
 
-  const changer = search ? searching : data;
+  const changer = search ? searching : history;
   return (
     <div>
       <Grid
@@ -41,9 +35,9 @@ const List = () => {
           overflow: "auto",
         }}
       >
-        {isLoading ? (
-          <CircularProgress />
-        ) : !isLoading && !changer.length ? (
+        {loading ? (
+          <CircularProgress size="4rem" sx={{ mt: "6rem", color: "red" }} />
+        ) : !loading && !changer.length ? (
           <div style={{ color: "white", marginTop: "3rem", fontSize: "2rem" }}>
             No Transaction History
           </div>

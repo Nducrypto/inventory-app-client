@@ -1,23 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Pagination, PaginationItem, Paper } from "@mui/material";
 
-import { getTransactions } from "../../States/Actions/InventoryActions";
+const Paginate = ({ currentPage, setCurrentPage }) => {
+  const { inventory } = useSelector((state) => state.inventory);
 
-const Paginate = ({ page }) => {
-  const user = JSON.parse(localStorage.getItem("profile"));
-  const creator = user?.result._id;
-
-  const { numberOfPages } = useSelector((state) => state.inventory);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (page) {
-      dispatch(getTransactions(page, creator));
-    }
-  }, [dispatch, page, creator]);
+  const totalPage = Math.ceil(inventory.length / 4);
 
   return (
     <Paper
@@ -27,6 +17,22 @@ const Paginate = ({ page }) => {
       }}
     >
       <Pagination
+        sx={{ display: "flex", justifyContent: "space-evenly" }}
+        count={totalPage}
+        page={Number(currentPage) || 1}
+        color="secondary"
+        onChange={(e, value) => {
+          setCurrentPage(value);
+        }}
+        renderItem={(item) => (
+          <PaginationItem
+            {...item}
+            component={Link}
+            to={`/?page=${item.page}`}
+          />
+        )}
+      />
+      {/* <Pagination
         sx={{ display: "flex", justifyContent: "space-evenly" }}
         count={numberOfPages}
         page={Number(page) || 1}
@@ -38,7 +44,7 @@ const Paginate = ({ page }) => {
             to={`/?page=${item.page}`}
           />
         )}
-      />
+      /> */}
     </Paper>
   );
 };

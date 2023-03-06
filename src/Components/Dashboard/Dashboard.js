@@ -17,18 +17,20 @@ import { deleteAll } from "../../States/Actions/InventoryActions";
 import { useDispatch } from "react-redux";
 import Paginate from "../Pagination/paginate";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
+import { useState } from "react";
 
 const Sidebar = () => {
+  const useNdu = () => {
+    return new URLSearchParams(useLocation().search);
+  };
+  const page = useNdu().get("page") || 1;
+  const [currentPage, setCurrentPage] = useState(page);
+  console.log(currentPage);
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const { inventory, loading, search, setSnackBarOpen, snackBarOpen } =
     useStateContext();
   const dispatch = useDispatch();
-
-  const useNdu = () => {
-    return new URLSearchParams(useLocation().search);
-  };
-  const page = useNdu().get("page") || 1;
 
   const searching = inventory.filter(
     (p) =>
@@ -37,7 +39,8 @@ const Sidebar = () => {
       p.type.toLowerCase().includes(search) ||
       p.type.includes(search)
   );
-
+  const first = (currentPage - 1) * 4;
+  const second = currentPage * 4;
   const changer = search ? searching : inventory;
   return (
     <Container>
@@ -91,8 +94,8 @@ const Sidebar = () => {
               <h1>No Item InStock</h1>
             ) : (
               changer
-                ?.slice()
-                .sort((a, b) => (a._id > b._id ? -1 : +1))
+                ?.slice(first, second)
+                .sort((a, b) => (a._id > b._id ? -1 : 1))
                 .map((row) => (
                   <TableRow key={row._id}>
                     <div
@@ -120,7 +123,7 @@ const Sidebar = () => {
                       {row.quantitySold}
                     </TableCell>
                     <TableCell align="right" sx={{ color: "green" }}>
-                      {row.quantityRemaining === 0 && !row.quantitySold
+                      {row.quantitySold === 0
                         ? row.quantityIn
                         : row.quantityRemaining}
                     </TableCell>
@@ -146,7 +149,7 @@ const Sidebar = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Paginate page={page} />
+      <Paginate currentPage={currentPage} setCurrentPage={setCurrentPage} />
       {/* {user?.result && <PageFilled />} */}
     </Container>
   );
