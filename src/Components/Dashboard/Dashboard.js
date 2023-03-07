@@ -25,7 +25,7 @@ const Sidebar = () => {
   };
   const page = useNdu().get("page") || 1;
   const [currentPage, setCurrentPage] = useState(page);
-  console.log(currentPage);
+
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const { inventory, loading, search, setSnackBarOpen, snackBarOpen } =
@@ -42,6 +42,10 @@ const Sidebar = () => {
   const first = (currentPage - 1) * 4;
   const second = currentPage * 4;
   const changer = search ? searching : inventory;
+
+  // if (!user?.result) {
+  //   return <h1>Hello</h1>;
+  // }
   return (
     <Container>
       <CustomizedSnackbar
@@ -53,8 +57,13 @@ const Sidebar = () => {
             : false
         }
       />
-      {/* <Percentage /> */}
+
       {user?.result && <PageFilled />}
+      <div style={{ textAlign: "center" }}>
+        {user?.result && loading && (
+          <CircularProgress sx={{ color: "white", marginTop: "2rem" }} />
+        )}
+      </div>
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
@@ -88,9 +97,7 @@ const Sidebar = () => {
           </TableHead>
 
           <TableBody>
-            {loading ? (
-              <CircularProgress />
-            ) : !loading && !changer.length ? (
+            {!loading && !changer.length ? (
               <h1>No Item InStock</h1>
             ) : (
               changer
@@ -149,8 +156,9 @@ const Sidebar = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Paginate currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      {/* {user?.result && <PageFilled />} */}
+      {user?.result && (
+        <Paginate currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      )}
     </Container>
   );
 };

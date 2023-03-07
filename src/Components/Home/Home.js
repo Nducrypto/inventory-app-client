@@ -1,3 +1,4 @@
+import Carousel from "../Carousel/Carousel";
 import Dashboard from "../Dashboard/Dashboard";
 import Percentage from "../Percentage/Percentage";
 
@@ -6,6 +7,7 @@ const Home = () => {
     <div className="home">
       <Percentage />
       <Dashboard />
+      <Carousel />
       {/* <Sidebar /> */}
     </div>
   );
