@@ -60,8 +60,7 @@ const Form = () => {
     console.log(findMe);
     if (
       findMe &&
-      findMe.quantityRemaining &&
-      Number(form.quantity) > Number(findMe?.quantityRemaining) &&
+      form.quantity > findMe?.quantityRemaining &&
       form.type === "Outgoing"
     ) {
       setError(true);
@@ -115,6 +114,27 @@ const Form = () => {
             : ""
         }
       />
+      <input
+        style={{
+          marginTop: ".5rem",
+          width: "100%",
+          background: "transparent",
+          border: "1px solid blue",
+          height: "3rem",
+        }}
+        placeholder="Category"
+        value={form.category}
+        onChange={(e) => {
+          setForm({ ...form, category: e.target.value.toUpperCase() });
+          setError(false);
+        }}
+        list="browsers"
+      />
+      <datalist id="browsers">
+        {inventory?.map((item) => (
+          <option value={item.category} />
+        ))}
+      </datalist>
 
       <FormControl fullWidth>
         <InputLabel>Type</InputLabel>
@@ -136,23 +156,11 @@ const Form = () => {
         sx={{
           marginTop: ".5rem",
         }}
-        label="Category"
-        fullWidth
-        value={form.category}
-        onChange={(e) => {
-          setForm({ ...form, category: e.target.value.toUpperCase() });
-          setError(false);
-        }}
-      />
-
-      <TextField
-        sx={{
-          marginTop: ".5rem",
-        }}
         fullWidth
         value={form.date}
         onChange={(e) => setForm({ ...form, date: e.target.value })}
         type="date"
+        size="small"
         inputProps={{
           min: FormatDate(new Date()),
         }}
@@ -163,9 +171,10 @@ const Form = () => {
         }}
         type="number"
         value={form.price}
-        label="price"
         fullWidth
-        onChange={(e) => setForm({ ...form, price: e.target.value })}
+        size="small"
+        label="Price"
+        onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
       />
 
       <TextField
@@ -174,11 +183,12 @@ const Form = () => {
         }}
         label="quantity"
         type="number"
+        size="small"
         fullWidth
         value={form.quantity}
         onChange={(e) => {
           setError(false);
-          setForm({ ...form, quantity: e.target.value });
+          setForm({ ...form, quantity: Number(e.target.value) });
         }}
       />
       <div>

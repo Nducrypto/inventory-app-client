@@ -7,7 +7,7 @@ import {
   TableBody,
   Table,
   Container,
-  CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import PageFilled from "../PageFill/PageFill";
@@ -19,7 +19,7 @@ import Paginate from "../Pagination/paginate";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
 import { useState } from "react";
 
-const Sidebar = () => {
+const Sidebar = (value) => {
   const useNdu = () => {
     return new URLSearchParams(useLocation().search);
   };
@@ -43,9 +43,6 @@ const Sidebar = () => {
   const second = currentPage * 4;
   const changer = search ? searching : inventory;
 
-  // if (!user?.result) {
-  //   return <h1>Hello</h1>;
-  // }
   return (
     <Container>
       <CustomizedSnackbar
@@ -61,7 +58,9 @@ const Sidebar = () => {
       {user?.result && <PageFilled />}
       <div style={{ textAlign: "center" }}>
         {user?.result && loading && (
-          <CircularProgress sx={{ color: "white", marginTop: "2rem" }} />
+          <LinearProgress
+            sx={{ backgroundColor: "yellow", fontSize: "1rem" }}
+          />
         )}
       </div>
 
