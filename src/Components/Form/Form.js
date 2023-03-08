@@ -28,6 +28,12 @@ const initialState = {
 
 const Form = () => {
   const [form, setForm] = useState(initialState);
+  const [status, setStaus] = useState({});
+  console.log(status.quantityRemaining);
+  // console.log(form.quantity);
+  const ndu = status.quantitySold === Number(status.quantityIn);
+
+  console.log(ndu);
   const {
     currentId,
     setCurrentId,
@@ -43,28 +49,29 @@ const Form = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
-
   const clickEdith = inventory.find((p) =>
     currentId ? p._id === currentId : null
   );
   const totalCost = form.price * form.quantity;
   useEffect(() => {
+    const findMe = inventory?.find((p) => p.category === form.category);
     if (currentId) {
       setForm(clickEdith);
     }
-  }, [clickEdith, setForm, currentId]);
+    if (findMe) {
+      setStaus(findMe);
+    }
+  }, [clickEdith, setForm, currentId, form.category, inventory]);
 
   // ===== HANDLESUBMIT ====
   const handleSubmit = () => {
-    const findMe = inventory?.find((p) => p.category === form.category);
-    console.log(findMe);
     if (
-      findMe &&
-      form.quantity > findMe?.quantityRemaining &&
+      status?.quantityRemaining === 0 &&
+      form.quantity > status?.quantityIn &&
       form.type === "Outgoing"
     ) {
       setError(true);
-    } else if (!findMe && form.type === "Outgoing") {
+    } else if (!status && form.type === "Outgoing") {
       setError(true);
     } else if (currentId) {
       dispatch(
@@ -188,7 +195,7 @@ const Form = () => {
         value={form.quantity}
         onChange={(e) => {
           setError(false);
-          setForm({ ...form, quantity: Number(e.target.value) });
+          setForm({ ...form, quantity: e.target.value });
         }}
       />
       <div>

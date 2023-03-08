@@ -128,7 +128,13 @@ const Sidebar = (value) => {
                     <TableCell align="right" sx={{ color: "red" }}>
                       {row.quantitySold}
                     </TableCell>
-                    <TableCell align="right" sx={{ color: "green" }}>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: row.quantityRemaining < 0 ? "red" : "green",
+                        fontSize: row.quantityRemaining < 0 && "1.2rem",
+                      }}
+                    >
                       {row.quantitySold === 0
                         ? row.quantityIn
                         : row.quantityRemaining}
@@ -139,7 +145,12 @@ const Sidebar = (value) => {
                     <TableCell align="right" sx={{ color: "red" }}>
                       {row.outgoingCost}
                     </TableCell>
-                    <TableCell align="right" sx={{ color: "green" }}>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: "green",
+                      }}
+                    >
                       {!row.outgoingCost ? 0 : row.outgoingCost - row.totalCost}
                     </TableCell>
                     <TableCell align="right" sx={{ color: "green" }}>
