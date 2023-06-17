@@ -66,14 +66,14 @@ const Form = () => {
   // ===== HANDLESUBMIT ====
   const handleSubmit = () => {
     if (
-      status?.quantityRemaining === 0 &&
-      form.quantity > status?.quantityIn &&
+      status?.quantityIn - status.quantitySold < form.quantity &&
       form.type === "Outgoing"
     ) {
       setError(true);
     } else if (!status && form.type === "Outgoing") {
       setError(true);
     } else if (currentId) {
+      // updating transaction
       dispatch(
         updateTransaction(
           currentId,
@@ -86,6 +86,7 @@ const Form = () => {
         )
       );
     } else {
+      // create transaction
       dispatch(
         createTransaction(
           { ...form, totalCost: totalCost, creator: creator },

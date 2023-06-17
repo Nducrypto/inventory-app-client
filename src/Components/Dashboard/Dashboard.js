@@ -135,9 +135,7 @@ const Sidebar = (value) => {
                         fontSize: row.quantityRemaining < 0 && "1.2rem",
                       }}
                     >
-                      {row.quantitySold === 0
-                        ? row.quantityIn
-                        : row.quantityRemaining}
+                      {row.quantityRemaining}
                     </TableCell>
                     <TableCell align="right" sx={{ color: "blue" }}>
                       {row.totalCost}
@@ -151,9 +149,11 @@ const Sidebar = (value) => {
                         color: "green",
                       }}
                     >
-                      {!row.outgoingCost ? 0 : row.outgoingCost - row.totalCost}
+                      {row.outgoingCost === 0
+                        ? 0
+                        : row.outgoingCost - row.totalCost}
                     </TableCell>
-                    <TableCell align="right" sx={{ color: "green" }}>
+                    <TableCell align="right" sx={{ color: "red" }}>
                       <Delete
                         onClick={() =>
                           dispatch(deleteAll(row, setSnackBarOpen))

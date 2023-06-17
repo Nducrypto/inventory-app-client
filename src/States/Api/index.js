@@ -13,7 +13,7 @@ export const deleteAllTransaction = (data) =>
   API.delete(`/page/deleteAll`, { data });
 
 export const deleteOneHistory = (data) =>
-  API.delete(`/page/deleteOne`, { data });
+  API.delete("/page/deleteOne", { data });
 // API.delete(`/page/${id}/${data.type}/${data.category}/${data.creator}`);
 export const updateTransaction = (id, updatedTransaction) =>
   API.patch(`/page/${id}`, updatedTransaction);
