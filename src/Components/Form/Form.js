@@ -28,12 +28,8 @@ const initialState = {
 
 const Form = () => {
   const [form, setForm] = useState(initialState);
-  const [status, setStaus] = useState({});
-  console.log(status.quantityRemaining);
-  // console.log(form.quantity);
-  const ndu = status.quantitySold === Number(status.quantityIn);
+  const [status, setStatus] = useState({});
 
-  console.log(ndu);
   const {
     currentId,
     setCurrentId,
@@ -49,55 +45,67 @@ const Form = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
-  const clickEdith = inventory.find((p) =>
-    currentId ? p._id === currentId : null
-  );
+
+  const selectedItem = currentId
+    ? inventory.find((p) => p._id === currentId)
+    : null;
   const totalCost = form.price * form.quantity;
   useEffect(() => {
-    const findMe = inventory?.find((p) => p.category === form.category);
-    if (currentId) {
-      setForm(clickEdith);
+    const categoryMatch = inventory?.find((p) => p.category === form.category);
+    if (currentId && selectedItem) {
+      setForm(selectedItem);
     }
-    if (findMe) {
-      setStaus(findMe);
+    if (categoryMatch) {
+      setStatus(categoryMatch);
     }
-  }, [clickEdith, setForm, currentId, form.category, inventory]);
+  }, [selectedItem, setForm, currentId, form.category, inventory]);
 
   // ===== HANDLESUBMIT ====
   const handleSubmit = () => {
-    if (
-      status?.quantityIn - status.quantitySold < form.quantity &&
-      form.type === "Outgoing"
-    ) {
+    if (isQuantityBelowFormQuantity()) {
       setError(true);
     } else if (!status && form.type === "Outgoing") {
       setError(true);
     } else if (currentId) {
-      // updating transaction
-      dispatch(
-        updateTransaction(
-          currentId,
-          {
-            ...form,
-            totalCost: totalCost,
-            creator: creator,
-          },
-          setOpenBackDrop
-        )
-      );
+      updateProduct();
     } else {
-      // create transaction
-      dispatch(
-        createTransaction(
-          { ...form, totalCost: totalCost, creator: creator },
-          setSnackBarOpen,
-          setOpenBackDrop
-        )
-      );
+      addProduct();
       setForm(initialState);
     }
     setCurrentId();
   };
+
+  function isQuantityBelowFormQuantity() {
+    const quantityAvailable = status?.quantityIn - status.quantitySold;
+    if (quantityAvailable < form.quantity && form.type === "Outgoing") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  function addProduct() {
+    dispatch(
+      createTransaction(
+        { ...form, totalCost: totalCost, creator: creator },
+        setSnackBarOpen,
+        setOpenBackDrop
+      )
+    );
+  }
+
+  function updateProduct() {
+    dispatch(
+      updateTransaction(
+        currentId,
+        {
+          ...form,
+          totalCost: totalCost,
+          creator: creator,
+        },
+        setOpenBackDrop
+      )
+    );
+  }
 
   if (!user?.result) return null;
 

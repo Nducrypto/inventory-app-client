@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import History from "./Components/History/History";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import "./App.css";
@@ -13,6 +13,8 @@ import Home from "./Components/Home/Home";
 import { getTransactions } from "./States/Actions/InventoryActions";
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("profile"));
+
   const ProtectedRoute = ({ children }) => {
     if (user?.result) {
       return children;
@@ -29,16 +31,12 @@ function App() {
   };
 
   const { activeMenu } = useStateContext();
-  const location = useLocation();
-
-  const user = JSON.parse(localStorage.getItem("profile"));
   const creator = user?.result._id;
-
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getTransactions(creator));
-    JSON.parse(localStorage.getItem("profile"));
-  }, [dispatch, location, creator]);
+  }, [dispatch, creator]);
 
   return (
     <div className="flex relative ">

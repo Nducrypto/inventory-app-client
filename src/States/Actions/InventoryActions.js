@@ -15,7 +15,7 @@ export const getTransactions = (creator) => async (dispatch) => {
     dispatch(startLoading());
 
     const { data } = await api.fetchInventories(creator);
-    console.log(data);
+
     dispatch(
       getProducts({ transactions: data.transactions, history: data.history })
     );

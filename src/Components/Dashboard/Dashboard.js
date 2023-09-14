@@ -1,14 +1,4 @@
-import {
-  Paper,
-  TableRow,
-  TableHead,
-  TableContainer,
-  TableCell,
-  TableBody,
-  Table,
-  Container,
-  LinearProgress,
-} from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import PageFilled from "../PageFill/PageFill";
 import { useLocation } from "react-router-dom";
@@ -18,12 +8,11 @@ import { useDispatch } from "react-redux";
 import Paginate from "../Pagination/paginate";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
 import { useState } from "react";
+import "./dashboard.css";
 
 const Sidebar = (value) => {
-  const useNdu = () => {
-    return new URLSearchParams(useLocation().search);
-  };
-  const page = useNdu().get("page") || 1;
+  const location = useLocation();
+  const page = new URLSearchParams(location.search).get("page") || 1;
   const [currentPage, setCurrentPage] = useState(page);
 
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -32,19 +21,25 @@ const Sidebar = (value) => {
     useStateContext();
   const dispatch = useDispatch();
 
-  const searching = inventory.filter(
-    (p) =>
-      p.category.toLowerCase().includes(search) ||
-      p.category.includes(search) ||
-      p.type.toLowerCase().includes(search) ||
-      p.type.includes(search)
-  );
-  const first = (currentPage - 1) * 4;
-  const second = currentPage * 4;
-  const changer = search ? searching : inventory;
+  const itemsPerPage = 4;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = currentPage * itemsPerPage;
 
+  const conditionalContentDisplay = () => {
+    if (search) {
+      return inventory.filter(
+        (p) =>
+          p.category.toLowerCase().includes(search) ||
+          p.category.includes(search) ||
+          p.type.toLowerCase().includes(search) ||
+          p.type.includes(search)
+      );
+    } else {
+      return inventory;
+    }
+  };
   return (
-    <Container>
+    <div className="dashboard-container">
       <CustomizedSnackbar
         message={
           snackBarOpen === "create"
@@ -64,112 +59,74 @@ const Sidebar = (value) => {
         )}
       </div>
 
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
-        <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "green" }}>
-              <TableCell sx={{ color: "white", fontSize: "1rem" }}>
-                Products
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Bought
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Sold
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Instock
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Total Cost&nbsp;(&#8358;)
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Sold&nbsp;(&#8358;)
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Profit&nbsp;(&#8358;)
-              </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
-                Delete
-              </TableCell>
-            </TableRow>
-          </TableHead>
+      <div className="orders-list-table-container">
+        <table className="order-list-table">
+          <thead>
+            <tr className="table-header">
+              <th className="table-header">Products</th>
+              <th className="table-header">Quantity Bought</th>
+              <th className="table-header">Quantity Sold</th>
+              <th className="table-header">Quantity Instock</th>
+              <th className="table-header">Total Cost&nbsp;(&#8358;)</th>
+              <th className="table-header">Sold&nbsp;(&#8358;)</th>
+              <th className="table-header">Profit&nbsp;(&#8358;)</th>
+              <th className="table-header">Delete</th>
+            </tr>
+          </thead>
 
-          <TableBody>
-            {!loading && !changer.length ? (
+          <tbody>
+            {!loading && conditionalContentDisplay().length === 0 ? (
               <h1>No Item InStock</h1>
             ) : (
-              changer
-                ?.slice(first, second)
-                .sort((a, b) => (a._id > b._id ? -1 : 1))
-                .map((row) => (
-                  <TableRow key={row._id}>
-                    <div
+              conditionalContentDisplay()
+                ?.slice(startIndex, endIndex)
+                .sort((a, b) => b._id.localeCompare(a._id))
+                .map((item) => (
+                  <tr key={item._id} className="user-row">
+                    <td>{item.category}</td>
+
+                    <td>{item.quantityIn}</td>
+                    <td>{item.quantitySold}</td>
+                    <td
+                      align="right"
                       style={{
-                        position: "fixed",
-                        backgroundColor: "white",
-                        zIndex: "500",
+                        color: item.quantityRemaining === 0 ? "red" : "green",
+                        fontSize: item.quantityRemaining === 0 && "1.2rem",
                       }}
                     >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{
-                          display: "inline-block",
-                          ":first-letter": { textTransform: "uppercase" },
-                        }}
-                      >
-                        {row.category}
-                      </TableCell>
-                    </div>
-                    <TableCell align="right" sx={{ color: "blue" }}>
-                      {row.quantityIn}
-                    </TableCell>
-                    <TableCell align="right" sx={{ color: "red" }}>
-                      {row.quantitySold}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        color: row.quantityRemaining < 0 ? "red" : "green",
-                        fontSize: row.quantityRemaining < 0 && "1.2rem",
-                      }}
-                    >
-                      {row.quantityRemaining}
-                    </TableCell>
-                    <TableCell align="right" sx={{ color: "blue" }}>
-                      {row.totalCost}
-                    </TableCell>
-                    <TableCell align="right" sx={{ color: "red" }}>
-                      {row.outgoingCost}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        color: "green",
-                      }}
-                    >
-                      {row.outgoingCost === 0
+                      {item.quantityRemaining}
+                    </td>
+                    <td>
+                      &#8358;{" "}
+                      {Intl.NumberFormat().format(item.totalCost.toFixed(2))}
+                    </td>
+                    <td>
+                      &#8358;{" "}
+                      {Intl.NumberFormat().format(item.outgoingCost.toFixed(2))}
+                    </td>
+                    <td>
+                      {item.outgoingCost === 0
                         ? 0
-                        : row.outgoingCost - row.totalCost}
-                    </TableCell>
-                    <TableCell align="right" sx={{ color: "red" }}>
+                        : item.outgoingCost - item.totalCost}
+                    </td>
+                    <td>
                       <Delete
+                        sx={{ color: "red", fontSize: "1.2rem" }}
                         onClick={() =>
-                          dispatch(deleteAll(row, setSnackBarOpen))
+                          dispatch(deleteAll(item, setSnackBarOpen))
                         }
                       />
-                    </TableCell>
-                  </TableRow>
+                    </td>
+                  </tr>
                 ))
             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tbody>
+        </table>
+      </div>
       {user?.result && (
         <Paginate currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
-    </Container>
+    </div>
   );
 };
 export default Sidebar;
