@@ -1,42 +1,40 @@
 import { LinearProgress } from "@mui/material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 import PageFilled from "../PageFill/PageFill";
-import { useLocation } from "react-router-dom";
-import { Delete } from "@mui/icons-material";
-import { deleteAll } from "../../States/Actions/InventoryActions";
-import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import Paginate from "../Pagination/paginate";
 import CustomizedSnackbar from "../SnackBar/SnackBar";
 import { useState } from "react";
 import "./dashboard.css";
 
-const Sidebar = (value) => {
+const Dashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const page = new URLSearchParams(location.search).get("page") || 1;
   const [currentPage, setCurrentPage] = useState(page);
 
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  const { inventory, loading, search, setSnackBarOpen, snackBarOpen } =
-    useStateContext();
-  const dispatch = useDispatch();
+  const { inventory, loading, search, snackBarOpen } = useStateContext();
 
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = currentPage * itemsPerPage;
 
-  const conditionalContentDisplay = () => {
-    if (search) {
-      return inventory.filter(
+  const conditionalContentDisplay = search
+    ? inventory.filter(
         (p) =>
           p.category.toLowerCase().includes(search) ||
           p.category.includes(search) ||
           p.type.toLowerCase().includes(search) ||
           p.type.includes(search)
-      );
-    } else {
-      return inventory;
-    }
+      )
+    : inventory;
+
+  const length = conditionalContentDisplay.length;
+
+  const handleNavigation = (category) => {
+    navigate(`/productshistory?category=${category}`);
   };
   return (
     <div className="dashboard-container">
@@ -70,19 +68,25 @@ const Sidebar = (value) => {
               <th className="table-header">Total Cost&nbsp;(&#8358;)</th>
               <th className="table-header">Sold&nbsp;(&#8358;)</th>
               <th className="table-header">Profit&nbsp;(&#8358;)</th>
-              <th className="table-header">Delete</th>
             </tr>
           </thead>
 
           <tbody>
-            {!loading && conditionalContentDisplay().length === 0 ? (
+            {!user ? (
+              ""
+            ) : !loading && length === 0 ? (
               <h1>No Item InStock</h1>
             ) : (
-              conditionalContentDisplay()
+              conditionalContentDisplay
                 ?.slice(startIndex, endIndex)
                 .sort((a, b) => b._id.localeCompare(a._id))
                 .map((item) => (
-                  <tr key={item._id} className="user-row">
+                  <tr
+                    key={item._id}
+                    style={{ cursor: "pointer" }}
+                    className="user-row"
+                    onClick={() => handleNavigation(item.category)}
+                  >
                     <td>{item.category}</td>
 
                     <td>{item.quantityIn}</td>
@@ -109,14 +113,6 @@ const Sidebar = (value) => {
                         ? 0
                         : item.outgoingCost - item.totalCost}
                     </td>
-                    <td>
-                      <Delete
-                        sx={{ color: "red", fontSize: "1.2rem" }}
-                        onClick={() =>
-                          dispatch(deleteAll(item, setSnackBarOpen))
-                        }
-                      />
-                    </td>
                   </tr>
                 ))
             )}
@@ -129,4 +125,4 @@ const Sidebar = (value) => {
     </div>
   );
 };
-export default Sidebar;
+export default Dashboard;

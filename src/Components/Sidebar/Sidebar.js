@@ -16,20 +16,14 @@ const Sidebar = () => {
       setActiveMenu(false);
     }
   };
-
   const handleBackground = (name) => {
-    if ((location.pathname === "/") & (name === "Home")) {
-      return "orange";
-    } else if (
-      (location.pathname === "/productshistory") &
-      (name === "Products")
-    ) {
-      return "orange";
-    } else if ((location.pathname === "/profile") & (name === "Profile")) {
-      return "orange";
-    } else {
-      return "darkred";
-    }
+    const colorMap = {
+      "/": "Home",
+      "/productshistory": "Products",
+      "/profile": "Profile",
+    };
+
+    return colorMap[location.pathname] === name ? "#74C365" : "#007848";
   };
 
   const activeLink =
@@ -63,7 +57,7 @@ const Sidebar = () => {
                 onClick={handleCloseSidebar}
                 className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight text-slate-900"
               >
-                <span style={{ color: "white" }}>Inventory</span>
+                <span style={{ color: "black" }}>Inventory</span>
               </Link>
 
               <Tooltip title="Menu" position="BottomCenter">

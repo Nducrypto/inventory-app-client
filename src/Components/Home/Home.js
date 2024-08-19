@@ -1,14 +1,11 @@
-import Carousel from "../Carousel/Carousel";
 import Dashboard from "../Dashboard/Dashboard";
 import Percentage from "../Percentage/Percentage";
-
+import "./Home.css";
 const Home = () => {
   return (
-    <div className="home">
+    <div className="container">
       <Percentage />
       <Dashboard />
-      <Carousel />
-      {/* <Sidebar /> */}
     </div>
   );
 };

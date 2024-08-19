@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { deleteOne } from "../../States/Actions/InventoryActions";
 import {
-  Avatar,
   Tooltip,
   CircularProgress,
   Card,
@@ -15,14 +14,18 @@ import { Delete, MoneyOff } from "@mui/icons-material";
 import { useStateContext } from "../../States/Context/ContextProvider";
 
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 const List = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
-  const { search, setSnackBarOpen, history, loading } = useStateContext();
+  const { setSnackBarOpen, history, loading } = useStateContext();
 
-  const searching = history.filter((p) => p.category.includes(search));
+  const searchedCategory = new URLSearchParams(location.search).get("category");
 
-  const changer = search ? searching : history;
+  const display = searchedCategory
+    ? history.filter((p) => p.category.includes(searchedCategory))
+    : history;
   return (
     <div>
       <Grid
@@ -37,12 +40,12 @@ const List = () => {
       >
         {loading ? (
           <CircularProgress size="4rem" sx={{ mt: "6rem", color: "red" }} />
-        ) : !loading && !changer.length ? (
+        ) : !loading && !display.length ? (
           <div style={{ color: "white", marginTop: "3rem", fontSize: "2rem" }}>
             No Transaction History
           </div>
         ) : (
-          changer?.map((item) => (
+          display.map((item) => (
             <Grid item xs={10} sm={4} md={4} lg={3} key={item._id}>
               <Card>
                 <CardContent>
@@ -53,14 +56,16 @@ const List = () => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     {item.type}
-                    <Avatar
+
+                    <MoneyOff
+                      size="small"
                       sx={{
                         backgroundColor:
-                          item.type === "Incoming" ? "blue" : "red",
+                          item.type === "Incoming" ? "green" : "red",
+                        color: "white",
+                        borderRadius: "50px",
                       }}
-                    >
-                      <MoneyOff />
-                    </Avatar>
+                    />
                   </Typography>
 
                   <Typography variant="h6" color="text.secondary">
