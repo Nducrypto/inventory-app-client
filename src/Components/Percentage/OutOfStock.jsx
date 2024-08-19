@@ -28,7 +28,7 @@ const OutOfStock = () => {
       <span className="featuredHeader">Out of stock</span>
       <div className="featuredMoneyContainer">
         <span>{getOutOfStockItem.length}</span>
-        <span>{category}</span>
+        <span className="outOfStockSlidertext">{category}</span>
       </div>
     </div>
   );

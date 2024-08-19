@@ -57,7 +57,7 @@ const Navbar = () => {
 
   return (
     <div
-      style={{ backgroundColor: "white" }}
+      style={{ backgroundColor: "#FEF9F3" }}
       className="flex justify-between p-2 md:mx-6 relative w-900"
     >
       <NavButton
@@ -70,15 +70,6 @@ const Navbar = () => {
       {prompt && <LogoutPrompt logout={logout} />}
 
       <div className="flex">
-        {/* ======PROFILE=== */}
-        {user?.result && (
-          <div className="flex items-center gap-2 cursor-pointer p-1 secondary-dark-bg rounded-lg">
-            <span className=" font-bold mr-8 text-14">
-              {user?.result.firstName} {user?.result.lastName}
-            </span>
-          </div>
-        )}
-
         {user?.result && (
           <input
             style={{

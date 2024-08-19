@@ -14,9 +14,13 @@ const PageFilled = () => {
       <Button
         size="small"
         onClick={handleToggle}
-        style={{ backgroundColor: "red", color: "white" }}
+        style={{
+          backgroundColor: "green",
+          color: "white",
+          padding: "2px 20px",
+        }}
       >
-        create item
+        Add new item
       </Button>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

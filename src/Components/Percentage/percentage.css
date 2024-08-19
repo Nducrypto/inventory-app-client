@@ -6,17 +6,14 @@
     gap: 0.5rem;
   }
   
- 
-
   .featuredItemRevenue {
-    background-color: rgb(57, 57, 77);
-    flex: 1;
-   
+    background-color: #ffffff;
     padding: 5px;
+    width: 30%;
     border-radius: 10px;
     cursor: pointer;
-    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 5px 15px -10px rgba(67, 61, 61, 0.75);
+
   }
   .featuredItemRevenue:hover {
     transform: scale(1.05);
@@ -24,27 +21,22 @@
 }
   
   .featuredItemSales {
-    background-color: red;
-    flex: 1;
+    background-color: #ffffff;
+    width: 30%;
     padding: 5px;
     border-radius: 10px;
     cursor: pointer;
-    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-  }
-  /* .featuredItemSales:hover {
-    transform: scale(1.01);
+    box-shadow: 5px 5px 15px -10px rgba(67, 61, 61, 0.75);
 
-} */
+  }
 
   .featuredItemCost {
-    background-color: green;
-    flex: 1;
+    background-color: #ffffff;
+    width: 30%;
     padding: 5px;
     border-radius: 10px;
     cursor: pointer;
-    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 5px 15px -10px rgba(67, 61, 61, 0.75);
   }
   
   .featuredItemCost:hover {
@@ -55,7 +47,9 @@
   
   .featuredHeader{
       font-size: 20px;
-      color: white;
+      color: black;
+      font-weight: 700;
+
   }
   
   .featuredMoneyContainer{
@@ -63,27 +57,32 @@
       display: flex;
       align-items: center;
       font-size: 1.5rem;
-      color: white;
+      color: gray;
       justify-content: space-between;
 
   }
-  
+  .outOfStockSlidertext {
+    font-size: 16px;
+  }
 
   @media (max-width: 600px) {
     .featured {
-    
       margin-top: 5rem;
     }
     
     
     .featuredMoneyContainer{
-        font-size: 15px;
-        color: white;
+        font-size: 12px;
+        color: black;
     }   
       
   .featuredHeader{
-    font-size: 14px;
-    color: white;
+    font-size: 12px;
+    color: black;
+}
+
+.outOfStockSlidertext {
+  font-size: 10px;
 }
 }
   

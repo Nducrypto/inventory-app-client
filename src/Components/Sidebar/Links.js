@@ -1,7 +1,5 @@
-import { AiOutlineShoppingCart } from "react-icons/ai";
+// import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FiShoppingBag } from "react-icons/fi";
-
-// import { RiContactsLine } from "react-icons/ri";
 
 export const links = [
   {
@@ -17,10 +15,10 @@ export const links = [
     icon: <FiShoppingBag />,
   },
 
-  {
-    name: "Profile",
-    url: "profile",
+  // {
+  //   name: "Profile",
+  //   url: "profile",
 
-    icon: <AiOutlineShoppingCart />,
-  },
+  //   icon: <AiOutlineShoppingCart />,
+  // },
 ];
